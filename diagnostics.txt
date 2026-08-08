@@ -1,0 +1,14 @@
+[lasso]  n=35115  d=59  rank=59  full_rank=True
+      lambda=0.001  L=3.619  mu=0.001  kappa_upper=L/mu=3619
+      gram eig: min=8.563e-05  max=1.447e+01  (Newton OK)
+[ridge]  n=35115  d=40  rank=40  full_rank=True
+      lambda=0.001  L=1.955  mu=0.001  kappa_upper=L/mu=1955
+      gram eig: min=7.523e-02  max=7.815e+00  (Newton OK)
+[ridge_raw]  n=35115  d=40  rank=40  full_rank=True
+      lambda=0.001  L=7631  mu=0.001  kappa_upper=L/mu=7.631e+06
+      gram eig: min=2.815e-05  max=3.052e+04  (Newton OK)
+[poly]  n=35115  d=76  rank=76  full_rank=True
+      lambda=0.001  L=2.334  mu=0.001  kappa_upper=L/mu=2334
+      gram eig: min=9.557e-03  max=9.331e+00  (Newton OK)
+snapshot T=2019-09-30  obs=6mo  outcome=3mo
+eligible customers: train=35115 test=11706  churn_rate=0.137

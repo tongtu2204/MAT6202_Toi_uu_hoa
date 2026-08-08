@@ -3,6 +3,7 @@ Repo làm việc chung của nhóm 1 môn học MAT6202 - Tối ưu hóa nâng c
 
 # data
 Các files chứa features để làm phục vụ giải bài toán tối ưu hóa hàm loss / loss ridge của logistic regression theo các thuật toán khác nhau:
+  - file ridge_raw: dùng cho thuật toán GD, để so sánh thuật toán GD trong điều kiện dữ liệu chưa chuẩn hóa
   - file ridge: dùng cho cả 4 thuật toán GD, AGD, Newton, SGD
   - file poly: dùng cho GD, AGD (add-on, có thể chạy thêm để thấy được ưu thế của GD, AGD trong các trường hợp khác nhau)
   - file lasso: dùng cho thuật toán ISTA/FISTA (add-on, có thể chạy thêm cho hàm loss lasso, nhưng ưu tiên sau)

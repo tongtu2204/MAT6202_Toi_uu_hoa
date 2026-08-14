@@ -1,0 +1,475 @@
+{
+  "newton_init": {
+    "w0_scale": 4.0,
+    "f_star": 0.2122582520655057,
+    "pure": {
+      "iters": 9,
+      "converged": false,
+      "max_f": 4531050.299767292,
+      "note": "Hessian not positive definite at iteration 8 (||g||=3.115e+00, f=4.531e+06, ||w||=5.072e+06, lambda=0.001, d=416): Matrix is not positive definite. Either the design matrix is rank-deficient, or the iterate ran away far enough that S=diag(p(1-p)) underflowed and the unpenalized intercept direction lost its only curvature."
+    },
+    "damped": {
+      "iters": 29,
+      "converged": true
+    }
+  },
+  "three_regimes": {
+    "two_over_L": 0.14215513577475442,
+    "two_over_lam": 2000.0,
+    "etas": [
+      0.05,
+      0.1,
+      0.5,
+      1.0,
+      5.0,
+      100.0,
+      1500.0,
+      2500.0,
+      5000.0
+    ]
+  },
+  "affine": {
+    "kappa_std": 1.5699608343047796e+16,
+    "kappa_raw": 8.079472513869034e+34,
+    "iters_newton_std": 17,
+    "iters_newton_raw": 17,
+    "n_nonpos_std": 0,
+    "n_nonpos_raw": 11,
+    "note_raw": "Hessian not positive definite at iteration 22 (||g||=3.392e-04, f=2.100e-01, ||w||=1.688e+03, lambda=0, d=416): Matrix is not positive definite. Either the design matrix is rank-deficient, or the iterate ran away far enough that S=diag(p(1-p)) underflowed and the unpenalized intercept direction lost its only curvature."
+  },
+  "sgd": {
+    "batches": [
+      32,
+      256,
+      4096,
+      75026
+    ],
+    "final_std": {
+      "32": 0.0412044331095944,
+      "256": 0.059332102072930964,
+      "4096": 0.0012721019287377981,
+      "75026": 0.0
+    },
+    "final_mean": {
+      "32": 0.22443694422266494,
+      "256": 0.08844605011306476,
+      "4096": 0.00294870210572879,
+      "75026": 0.007549372932023929
+    }
+  },
+  "breakeven": {
+    "kappa_star": 3645.7729619885617,
+    "d_star": 139.03063251816266,
+    "n": 75026,
+    "eps": 1e-10,
+    "k_newton": 10,
+    "d_cube_ratio": {
+      "40": 5626.95,
+      "160": 1406.7375,
+      "640": 351.684375
+    },
+    "blas": [
+      {
+        "n": 75026,
+        "d": 40,
+        "t_gemm": 0.01868750003632158,
+        "t_gemv": 0.0024299999931827188,
+        "gemm_gflops": 12.847261513491219,
+        "gemv_gflops": 2.469991776476802,
+        "ratio_time": 7.690329254629102,
+        "ratio_flop": 40
+      },
+      {
+        "n": 75026,
+        "d": 160,
+        "t_gemm": 0.06544691708404571,
+        "t_gemv": 0.0075869589345529675,
+        "gemm_gflops": 58.69384489214418,
+        "gemv_gflops": 3.164419394793337,
+        "ratio_time": 8.626238476919069,
+        "ratio_flop": 160
+      },
+      {
+        "n": 75026,
+        "d": 640,
+        "t_gemm": 0.7135136669967324,
+        "t_gemv": 0.023179708048701286,
+        "gemm_gflops": 86.13892353134348,
+        "gemv_gflops": 4.142989195473519,
+        "ratio_time": 30.781822855474193,
+        "ratio_flop": 640
+      }
+    ]
+  },
+  "gd_step_sweep": {
+    "L": 14.069136433937997,
+    "L_star": 3.6493203045305265,
+    "f_star": 0.2122582520655057,
+    "mults": [
+      0.1,
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      3.0,
+      5.0,
+      10.0
+    ],
+    "rows": [
+      {
+        "mult": 0.1,
+        "iters": 4000,
+        "gap": 0.013478094658206569,
+        "converged": false
+      },
+      {
+        "mult": 0.5,
+        "iters": 4000,
+        "gap": 0.001504711667458053,
+        "converged": false
+      },
+      {
+        "mult": 1.0,
+        "iters": 4000,
+        "gap": 0.0004997687431998465,
+        "converged": false
+      },
+      {
+        "mult": 1.5,
+        "iters": 4000,
+        "gap": 0.00023188183913816496,
+        "converged": false
+      },
+      {
+        "mult": 2.0,
+        "iters": 4000,
+        "gap": 0.00012290179687263203,
+        "converged": false
+      },
+      {
+        "mult": 3.0,
+        "iters": 4000,
+        "gap": 4.113745591818874e-05,
+        "converged": false
+      },
+      {
+        "mult": 5.0,
+        "iters": 4000,
+        "gap": 6.015145016219359e-06,
+        "converged": false
+      },
+      {
+        "mult": 10.0,
+        "iters": 4000,
+        "gap": 0.055701049640395406,
+        "converged": false
+      }
+    ]
+  },
+  "money": {
+    "f_star": 0.2122582520655057,
+    "f_star_bound": 3.1250624398807516e-26,
+    "f_star_grad_norm": 7.90577313092243e-15,
+    "f_sklearn": 0.2122582520657299,
+    "sgd_config": {
+      "eta0": 0.2,
+      "batch": 1024,
+      "gamma": 0.0,
+      "source": "/Users/tranthetai/Library/CloudStorage/GoogleDrive-tranthetai98@gmail.com/My Drive/master - hus/MAT6202_To\u0302\u0301i u\u031bu ho\u0301a na\u0302ng cao/Thuyet trinh/artifacts/tuning.json [h\u1eb1ng]"
+    },
+    "gd_config": {
+      "eta": 0.4,
+      "source": "/Users/tranthetai/Library/CloudStorage/GoogleDrive-tranthetai98@gmail.com/My Drive/master - hus/MAT6202_To\u0302\u0301i u\u031bu ho\u0301a na\u0302ng cao/Thuyet trinh/artifacts/tuning.json [gd_fixed]",
+      "tuned": true,
+      "eta_theory": 0.07107756788737721
+    },
+    "agd_config": {
+      "eta": 0.3,
+      "L_eff": 3.3333333333333335,
+      "source": "/Users/tranthetai/Library/CloudStorage/GoogleDrive-tranthetai98@gmail.com/My Drive/master - hus/MAT6202_To\u0302\u0301i u\u031bu ho\u0301a na\u0302ng cao/Thuyet trinh/artifacts/tuning.json [gd_accel]",
+      "tuned": true,
+      "eta_theory": 0.07107756788737721
+    },
+    "kappa_upper": 14069.136433937996,
+    "L": 14.069136433937997,
+    "rows": {
+      "Newton": {
+        "iters": 15,
+        "gap": 0.0,
+        "time": 10.376766209024936,
+        "converged": true
+      },
+      "GD": {
+        "iters": 3000,
+        "gap": 1.230915072417127e-05,
+        "time": 86.53658174991142,
+        "converged": false
+      },
+      "AGD": {
+        "iters": 1203,
+        "gap": 0.0,
+        "time": 39.52608241606504,
+        "converged": true
+      },
+      "SGD": {
+        "iters": 51,
+        "gap": 0.0015969443205050005,
+        "time": 10.958667667000555,
+        "converged": false
+      }
+    }
+  },
+  "kappa_honesty": {
+    "kappa_bound": 14026.004098112051,
+    "kappa_star": 3559.8528170404074,
+    "L_bound": 14.026004098112052,
+    "L_star": 3.5576983030754237,
+    "mu_star": 0.0009993947744258778,
+    "pred_gd_bound": 258368.54360468965,
+    "pred_gd_star": 65574.91223816082,
+    "meas_gd": 14541,
+    "eps": 1e-08,
+    "n_used": 15000
+  },
+  "kappa_sweep": {
+    "n_used": 15000,
+    "slope_gd": 0.8189793905696536,
+    "slope_agd": 0.4132276586787922,
+    "rows": [
+      {
+        "lam": 0.1,
+        "kappa_star": 185.54747862853824,
+        "it_gd": 1252,
+        "it_agd": 165
+      },
+      {
+        "lam": 0.03,
+        "kappa_star": 254.99340885761174,
+        "it_gd": 1658,
+        "it_agd": 214
+      },
+      {
+        "lam": 0.01,
+        "kappa_star": 382.58980839037014,
+        "it_gd": 2362,
+        "it_agd": 275
+      },
+      {
+        "lam": 0.003,
+        "kappa_star": 1204.496025807984,
+        "it_gd": 5613,
+        "it_agd": 386
+      },
+      {
+        "lam": 0.001,
+        "kappa_star": 3559.8528170404074,
+        "it_gd": 14541,
+        "it_agd": 609
+      }
+    ]
+  },
+  "armijo_sweep": {
+    "t0": 5.0,
+    "rows": [
+      {
+        "c1": 0.0001,
+        "rho": 0.5,
+        "iters": 1500,
+        "fevals": 7239,
+        "bt_per_iter": 3.826,
+        "mean_step": 1.0151041666666667,
+        "f_gap": 4.395982073274185e-06
+      },
+      {
+        "c1": 0.0001,
+        "rho": 0.8,
+        "iters": 1500,
+        "fevals": 18206,
+        "bt_per_iter": 11.137333333333334,
+        "mean_step": 0.5268157063653056,
+        "f_gap": 5.17443928754191e-05
+      },
+      {
+        "c1": 0.01,
+        "rho": 0.5,
+        "iters": 1500,
+        "fevals": 7230,
+        "bt_per_iter": 3.82,
+        "mean_step": 1.0296875,
+        "f_gap": 4.105835336221109e-06
+      },
+      {
+        "c1": 0.01,
+        "rho": 0.8,
+        "iters": 1500,
+        "fevals": 18208,
+        "bt_per_iter": 11.138666666666667,
+        "mean_step": 0.5267326989640315,
+        "f_gap": 5.1752879356603554e-05
+      },
+      {
+        "c1": 0.1,
+        "rho": 0.5,
+        "iters": 1500,
+        "fevals": 7108,
+        "bt_per_iter": 3.7386666666666666,
+        "mean_step": 1.193125,
+        "f_gap": 1.8951733583294494e-06
+      },
+      {
+        "c1": 0.1,
+        "rho": 0.8,
+        "iters": 1500,
+        "fevals": 18230,
+        "bt_per_iter": 11.153333333333334,
+        "mean_step": 0.5257062189601567,
+        "f_gap": 5.203303145023819e-05
+      }
+    ]
+  },
+  "fixed_vs_backtracking": [
+    {
+      "method": "GD",
+      "mode": "fixed",
+      "iters": 5000,
+      "fevals": 5000,
+      "time": 130.47700320894364,
+      "converged": false,
+      "f_gap": 0.0003324237746328562
+    },
+    {
+      "method": "AGD",
+      "mode": "fixed",
+      "iters": 2131,
+      "fevals": 2131,
+      "time": 55.66874391690362,
+      "converged": true,
+      "f_gap": 1.942890293094024e-16
+    },
+    {
+      "method": "Newton",
+      "mode": "fixed",
+      "iters": 11,
+      "fevals": 11,
+      "time": 7.0513848749687895,
+      "converged": true,
+      "f_gap": 2.7755575615628914e-17
+    },
+    {
+      "method": "GD",
+      "mode": "backtracking",
+      "iters": 5000,
+      "fevals": 14272,
+      "time": 218.88507425005082,
+      "converged": false,
+      "f_gap": 7.795777920427405e-08
+    },
+    {
+      "method": "AGD",
+      "mode": "backtracking",
+      "iters": 5000,
+      "fevals": 14788,
+      "time": 225.14072666701395,
+      "converged": false,
+      "f_gap": 0.015965592630277387
+    },
+    {
+      "method": "Newton",
+      "mode": "backtracking",
+      "iters": 11,
+      "fevals": 21,
+      "time": 7.45338579104282,
+      "converged": true,
+      "f_gap": 2.7755575615628914e-17
+    }
+  ],
+  "sklearn_timing": {
+    "f_star": 0.2122582520655057,
+    "rows": [
+      {
+        "solver": "Newton (t\u1ef1 code)",
+        "f": 0.2122582520655057,
+        "gap": 0.0,
+        "iters": 11,
+        "time": 10.20871920895297
+      },
+      {
+        "solver": "AGD (t\u1ef1 code)",
+        "f": 0.21225825206550575,
+        "gap": 5.551115123125783e-17,
+        "iters": 1335,
+        "time": 39.65494679193944
+      },
+      {
+        "solver": "GD (t\u1ef1 code)",
+        "f": 0.21225825206571317,
+        "gap": 2.0747292772682613e-13,
+        "iters": 20000,
+        "time": 540.9217651669169,
+        "capped": true
+      },
+      {
+        "solver": "SGD (t\u1ef1 code)",
+        "f": 0.2138551963860107,
+        "gap": 0.0015969443205050005,
+        "iters": 51,
+        "time": 10.602600915939547,
+        "capped": true
+      },
+      {
+        "solver": "sklearn lbfgs",
+        "f": 0.2122582520657299,
+        "gap": 2.2420953982305036e-13,
+        "iters": 225,
+        "time": 3.312924792058766
+      },
+      {
+        "solver": "sklearn newton-cholesky",
+        "f": 0.21225825206550572,
+        "gap": 2.7755575615628914e-17,
+        "iters": 10,
+        "time": 6.835458250017837
+      },
+      {
+        "solver": "sklearn saga",
+        "f": 0.21225825207738802,
+        "gap": 1.1882328454504432e-11,
+        "iters": 5000,
+        "time": 852.0718607919989
+      }
+    ]
+  },
+  "l1": {
+    "f_star": 0.22181841613380884,
+    "saga_f": 0.22181912226551026,
+    "nnz_saga": 126,
+    "d_reg": 519,
+    "subgrad_eta0": 2.0,
+    "methods": {
+      "ISTA": {
+        "iters": 8000,
+        "gap": 1.1940502938068143e-06,
+        "nnz": 126,
+        "converged": false
+      },
+      "FISTA": {
+        "iters": 8000,
+        "gap": 1.510155889228315e-11,
+        "nnz": 125,
+        "converged": false
+      },
+      "CD": {
+        "iters": 8000,
+        "gap": 0.0,
+        "nnz": 125,
+        "converged": false
+      },
+      "Subgradient": {
+        "iters": 8000,
+        "gap": 0.00014315440073728314,
+        "nnz": 519,
+        "converged": false
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# MAT6202 — pinned to the versions the results/figures were produced with.
+#   python -m venv .venv && source .venv/bin/activate
+#   pip install -r requirements.txt
+# Python 3.12 (3.10+ works). The presentation build additionally needs a system
+# XeLaTeX + biber (TeX Live) — not a pip package.
+numpy==1.26.4
+scipy==1.13.1
+scikit-learn==1.5.1
+pandas==2.2.2
+matplotlib==3.9.2
+openpyxl==3.1.5      # pandas.read_excel for the xlsx tables (Lending/Card)
+pytest==7.4.4        # test suite (tests/test_optim.py)
+threadpoolctl==3.5.0 # blas_threads.verify(): hỏi backend BLAS đang chạy, không tin biến môi trường

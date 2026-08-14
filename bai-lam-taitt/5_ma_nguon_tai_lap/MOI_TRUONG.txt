@@ -1,0 +1,33 @@
+MÔI TRƯỜNG ĐÃ DÙNG ĐỂ SINH MỌI SỐ LIỆU VÀ HÌNH VẼ TRONG BÀI
+============================================================
+Ghi lại nguyên trạng để đối chiếu khi tái lập. Thời gian tường sẽ khác trên máy khác;
+các TỈ SỐ mới là điều bài khẳng định.
+
+Python            : 3.12.7 (CPython)
+Hệ điều hành      : macOS-14.6-arm64-arm-64bit
+Kiến trúc         : arm64
+
+Thư viện Python (khớp với requirements.txt):
+  numpy            1.26.4
+  scipy            1.13.1
+  scikit-learn     1.5.1
+  pandas           2.2.2
+  matplotlib       3.9.2
+  openpyxl         3.1.5
+  pytest           7.4.4
+  threadpoolctl    3.5.0
+
+BLAS backend:
+  openblas   0.3.21     (mặc định 8 luồng — blas_threads.py ghim về 1 khi đo thời gian
+                         và verify() hỏi lại backend đang chạy để chắc chắn)
+
+Hệ thống LaTeX (để dựng lại PDF):
+  XeTeX 3.141592653-2.6-0.999998 (TeX Live 2026)
+  biber 2.21
+  Phông chữ tiếng Việt: Times New Roman qua fontspec
+  KHÔNG dùng: titlesec, tcolorbox, sectsty, mdframed
+
+Kết quả kiểm tra trên chính bản sao trong gói nộp bài:
+  pytest tests/ -q            → 19 passed
+  presentation_v2/main.tex    → main.pdf, 68 trang, 0 lỗi, 0 tham chiếu treo
+  docs/report.tex             → report.pdf, 11 trang, 0 lỗi

@@ -1,0 +1,2 @@
+dữ liệu được lưu dưới định dạng của numpy (các files .npz) được lưu tại đường dẫn:
+https://drive.google.com/drive/folders/1P9it5SPkCis0QvXKirIQHq6qTh6hEnRQ?usp=sharing

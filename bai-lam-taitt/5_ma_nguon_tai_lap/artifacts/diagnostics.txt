@@ -1,0 +1,14 @@
+[lasso]  n=75026  d=519  rank=506  full_rank=False
+      lambda=0.001  L=19.7  mu=0.001  kappa_upper=L/mu=1.97e+04
+      gram eig: min=-1.712e-15  max=7.880e+01  (SINGULAR — Newton will fail)
+[ridge]  n=75026  d=415  rank=415  full_rank=True
+      lambda=0.001  L=14.07  mu=0.001  kappa_upper=L/mu=1.407e+04
+      gram eig: min=6.969e-04  max=5.627e+01  (Newton OK)
+[ridge_raw]  n=75026  d=415  rank=376  full_rank=False
+      lambda=0.001  L=2.659e+16  mu=0.001  kappa_upper=L/mu=2.659e+19
+      gram eig: min=-6.619e-01  max=1.064e+17  (SINGULAR — Newton will fail)
+[poly]  n=75026  d=428  rank=428  full_rank=True
+      lambda=0.001  L=14.07  mu=0.001  kappa_upper=L/mu=1.407e+04
+      gram eig: min=1.477e-04  max=5.627e+01  (Newton OK)
+snapshots=['2019-03-31', '2019-06-30', '2019-09-30']  obs=(T-3mo, T]  outcome=(T, T+3mo]  holdout=False
+rows (customer x snapshot): train=75026 test=0  churn_rate=0.108

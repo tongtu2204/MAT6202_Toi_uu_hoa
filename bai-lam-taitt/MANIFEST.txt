@@ -1,0 +1,147 @@
+DANH MỤC FILE — GÓI NỘP BÀI MAT6202
+==============================================================================
+Sinh lúc  : 2026-08-14 00:15
+Tổng cộng : 178 file, 141.3 MB
+
+Bỏ qua khi liệt kê: __pycache__/, .pytest_cache/, .DS_Store
+
+CÂY THƯ MỤC
+------------------------------------------------------------------------------
+├── 1_bai_trinh_bay/  (1 file, 3.2 MB)
+│   └── MAT6202_bai_trinh_bay.pdf  (3.2 MB)
+├── 2_bao_cao_xu_ly_du_lieu/  (6 file, 1.6 MB)
+│   ├── diagrams/  (4 file, 727.5 KB)
+│   ├── bao_cao_xu_ly_du_lieu.pdf  (876.5 KB)
+│   └── feature_engineering_report.md  (29.7 KB)
+├── 3_ket_qua/  (47 file, 4.7 MB)
+│   ├── hinh_ve/  (38 file, 4.6 MB)
+│   ├── so_lieu/  (8 file, 80.8 KB)
+│   │   ├── adaptive_numbers.json  (5.5 KB)
+│   │   ├── diagnostics.txt  (914 B)
+│   │   ├── gate.json  (6.6 KB)
+│   │   ├── metrics.json  (271 B)
+│   │   ├── README.md  (4.9 KB)
+│   │   ├── rev1_numbers.json  (11.5 KB)
+│   │   ├── sgd_hyper.json  (6.9 KB)
+│   │   └── tuning.json  (44.3 KB)
+│   └── DOI_CHIEU_HINH_SLIDE.md  (5.1 KB)
+├── 4_du_lieu/  (3 file, 27.1 KB)
+│   ├── 0.Data VIB Hackathon Guidline.xlsx  (19.0 KB)
+│   ├── data description.txt  (2.0 KB)
+│   └── README.md  (6.2 KB)
+├── 5_ma_nguon_tai_lap/  (116 file, 131.7 MB)
+│   ├── artifacts/  (56 file, 126.4 MB)
+│   │   ├── figures/  (38 file, 4.6 MB)
+│   │   ├── adaptive_numbers.json  (5.5 KB)
+│   │   ├── agd_schemes_ridge.npz  (40.8 KB)
+│   │   ├── bt_grid_gd.npz  (109.8 KB)
+│   │   ├── diagnostics.txt  (914 B)
+│   │   ├── gate.json  (6.6 KB)
+│   │   ├── lasso.features.txt  (8.1 KB)
+│   │   ├── lasso.npz  (38.6 MB)
+│   │   ├── metrics.json  (271 B)
+│   │   ├── poly.features.txt  (7.5 KB)
+│   │   ├── poly.npz  (28.2 MB)
+│   │   ├── rev1_numbers.json  (11.5 KB)
+│   │   ├── ridge.features.txt  (6.6 KB)
+│   │   ├── ridge.npz  (28.2 MB)
+│   │   ├── ridge_raw.features.txt  (6.6 KB)
+│   │   ├── ridge_raw.npz  (26.4 MB)
+│   │   ├── sgd_hyper.json  (6.9 KB)
+│   │   ├── three_regimes_ridge.npz  (187.0 KB)
+│   │   └── tuning.json  (44.3 KB)
+│   ├── churn_opt/  (7 file, 47.7 KB)
+│   │   ├── __init__.py  (609 B)
+│   │   ├── aggregate.py  (20.7 KB)
+│   │   ├── build.py  (13.8 KB)
+│   │   ├── config.py  (5.5 KB)
+│   │   ├── diagnostics.py  (2.4 KB)
+│   │   ├── labeling.py  (2.1 KB)
+│   │   └── loaders.py  (2.6 KB)
+│   ├── data/  (3 file, 22.1 KB)
+│   │   ├── 0.Data VIB Hackathon Guidline.xlsx  (19.0 KB)
+│   │   ├── data description.txt  (2.0 KB)
+│   │   └── README.md  (1.1 KB)
+│   ├── docs/  (10 file, 1.6 MB)
+│   │   ├── diagrams/  (4 file, 727.5 KB)
+│   │   ├── appendix_features.tex  (8.8 KB)
+│   │   ├── feature_engineering_report.md  (29.7 KB)
+│   │   ├── make_appendix_features.py  (4.7 KB)
+│   │   ├── make_diagrams.py  (9.3 KB)
+│   │   ├── report.pdf  (876.5 KB)
+│   │   └── report.tex  (29.4 KB)
+│   ├── optim/  (19 file, 172.1 KB)
+│   │   ├── optimizers/  (8 file, 27.6 KB)
+│   │   │   ├── __init__.py  (978 B)
+│   │   │   ├── adaptive.py  (5.7 KB)
+│   │   │   ├── agd.py  (3.2 KB)
+│   │   │   ├── base.py  (2.6 KB)
+│   │   │   ├── gd.py  (1.8 KB)
+│   │   │   ├── ista.py  (7.8 KB)
+│   │   │   ├── newton.py  (3.2 KB)
+│   │   │   └── sgd.py  (2.4 KB)
+│   │   ├── __init__.py  (1.1 KB)
+│   │   ├── benchmark.py  (17.6 KB)
+│   │   ├── data.py  (1.2 KB)
+│   │   ├── diagnostics.py  (7.6 KB)
+│   │   ├── experiments.py  (52.6 KB)
+│   │   ├── linesearch.py  (889 B)
+│   │   ├── objective.py  (3.3 KB)
+│   │   ├── plots.py  (42.2 KB)
+│   │   ├── README.md  (2.9 KB)
+│   │   ├── reference.py  (5.4 KB)
+│   │   └── tuning.py  (9.8 KB)
+│   ├── presentation_v2/  (5 file, 3.3 MB)
+│   │   ├── main.bbl  (16.5 KB)
+│   │   ├── main.pdf  (3.2 MB)
+│   │   ├── main.tex  (93.5 KB)
+│   │   ├── README.md  (6.7 KB)
+│   │   └── references.bib  (3.8 KB)
+│   ├── tests/  (2 file, 11.8 KB)
+│   │   ├── test_optim.py  (6.7 KB)
+│   │   └── test_pipeline.py  (5.0 KB)
+│   ├── blas_threads.py  (2.9 KB)
+│   ├── CLAUDE.md  (25.7 KB)
+│   ├── MOI_TRUONG.txt  (1.3 KB)
+│   ├── README.md  (13.9 KB)
+│   ├── replot_three_regimes.py  (1.5 KB)
+│   ├── requirements.txt  (623 B)
+│   ├── run_adaptive.py  (2.2 KB)
+│   ├── run_benchmark.py  (3.2 KB)
+│   ├── run_classification_metrics.py  (1.8 KB)
+│   ├── run_experiments.py  (6.2 KB)
+│   ├── run_pipeline.py  (3.7 KB)
+│   ├── run_revision.py  (5.5 KB)
+│   ├── run_stage.py  (9.8 KB)
+│   └── run_tuning.py  (32.2 KB)
+├── 6_tai_lieu_goc/  (3 file, 30.6 KB)
+│   ├── cấu trúc bài thuyết trình mới.txt  (2.1 KB)
+│   ├── feature engineer.txt  (10.5 KB)
+│   └── outline.txt  (18.0 KB)
+├── HUONG_DAN_TAI_LAP.md  (12.6 KB)
+└── README.md  (13.3 KB)
+
+MÃ BĂM SHA-256 CỦA CÁC FILE KẾT QUẢ CHÍNH
+------------------------------------------------------------------------------
+17ffa6ed55f5c107e4bbf7a67a7b7eea21e626dc4b039f967214b6cd9cfa0090  1_bai_trinh_bay/MAT6202_bai_trinh_bay.pdf
+350c7fa322b1a290d87b43e008e4f20e373bfb8d37f0d5e2409c945004a6e354  2_bao_cao_xu_ly_du_lieu/bao_cao_xu_ly_du_lieu.pdf
+0c54d5d6c88667ae067cbf3be55df2f749d2c89e1a1f37c3e07fef60855f56d4  5_ma_nguon_tai_lap/artifacts/ridge.npz
+da15354bcfe64f0258858b765f56997131cbd76525c4994fd139eb71ecae3665  5_ma_nguon_tai_lap/artifacts/lasso.npz
+a4a4cb1e2c13c75622377c27c1d2406083b8dbeb18fab9871ff4b408da9fcaef  5_ma_nguon_tai_lap/artifacts/poly.npz
+5e21dab7807c83a202d6821327a465ee9b91a47f125d00ad8d20493f31bdd2f3  5_ma_nguon_tai_lap/artifacts/ridge_raw.npz
+1d978e25aced64b2220ed4950e62421cb9cd3d94b36f9b4338aec86537becf3f  5_ma_nguon_tai_lap/artifacts/tuning.json
+dfdfc83e0cd82cd0ea85bf2b35fd08179696a7802f3946fc405b8d5637930bb3  5_ma_nguon_tai_lap/artifacts/rev1_numbers.json
+17a1ec3c204fb2fb4271d1585d08015265f8d284801abab1236d8ab18f570155  5_ma_nguon_tai_lap/artifacts/adaptive_numbers.json
+f9496ae510dcbb5acd6f73299460909630b46fc71771d8eb960dd5db42f7aa57  5_ma_nguon_tai_lap/artifacts/sgd_hyper.json
+abaf8f2f382c635f147321f94be0241a1db091071c92c068e6b977162769d91c  5_ma_nguon_tai_lap/artifacts/gate.json
+03818584f29e84aaf3da70abbfa49035a3f1b38e4b55988f3e73b1bfb3c21ff3  5_ma_nguon_tai_lap/artifacts/metrics.json
+1bbff52c771a4a809834d687d078eb4d81a384a6013605e3e923445dc621434d  5_ma_nguon_tai_lap/artifacts/diagnostics.txt
+8b44112d90bc9525fca5913495dccd5ba9a9a3fa32fa2aa1804b881371679991  5_ma_nguon_tai_lap/presentation_v2/main.tex
+05bd08e56116f9ef47b689509a5b173318d5673128494521d8209ca45921997c  5_ma_nguon_tai_lap/docs/report.tex
+
+KIỂM TRA LẠI:
+  cd Nop_bai_MAT6202
+  shasum -a 256 1_bai_trinh_bay/MAT6202_bai_trinh_bay.pdf   # so với dòng trên
+
+LƯU Ý: dựng lại PDF từ nguồn sẽ cho mã băm KHÁC (LaTeX nhúng dấu thời gian).
+Số trang, số lỗi và nội dung mới là thứ cần đối chiếu, không phải mã băm.

@@ -89,7 +89,11 @@ def fine_linear_grid(grid, best: float, points: int, positive: bool = True):
         lower, upper = values[index - 1], values[index + 1]
     if positive:
         lower = max(lower, np.finfo(float).eps)
-    return tuple(float(x) for x in np.linspace(lower, upper, points))
+    left_count = points // 2
+    right_count = points - left_count - 1
+    left = np.linspace(lower, best, left_count + 1)[:-1]
+    right = np.linspace(best, upper, right_count + 1)[1:]
+    return tuple(float(x) for x in np.concatenate([left, [best], right]))
 
 
 def fine_log_grid(grid, best: float, points: int):
@@ -98,7 +102,11 @@ def fine_log_grid(grid, best: float, points: int):
     lower = best / 10.0 if index == 0 else values[index - 1]
     upper = best * 10.0 if index == len(values) - 1 else values[index + 1]
     upper = min(upper, 0.99)
-    return tuple(float(x) for x in np.geomspace(lower, upper, points))
+    left_count = points // 2
+    right_count = points - left_count - 1
+    left = np.geomspace(lower, best, left_count + 1)[:-1]
+    right = np.geomspace(best, upper, right_count + 1)[1:]
+    return tuple(float(x) for x in np.concatenate([left, [best], right]))
 
 
 def run_summary(run: OptimizationRun, f_star: float, stage: str) -> dict:
@@ -120,15 +128,20 @@ def run_summary(run: OptimizationRun, f_star: float, stage: str) -> dict:
         "min_step": float(np.min(run.steps)) if run.steps else None,
         "max_step": float(np.max(run.steps)) if run.steps else None,
         "note": run.note,
+        "trace": {
+            "iteration": run.iterations,
+            "objective": run.objectives,
+        },
     }
 
 
 def candidate_key(row: dict):
     if not row["finite"]:
-        return (2, float("inf"), float("inf"), float("inf"))
-    if row["first_converged_at"] is not None:
-        return (0, row["first_converged_at"], row["objective_evals"], row["final_grad_norm"])
-    return (1, row["final_grad_norm"], row["final_f_gap"], row["objective_evals"])
+        return (float("inf"), float("inf"), float("inf"))
+    # Mọi ứng viên có cùng ngân sách 500 vòng. Chọn nghiệm chính xác nhất ở
+    # đúng cuối ngân sách, tránh ưu tiên một đường từng chạm tolerance rồi mất
+    # ổn định về sau.
+    return (row["final_grad_norm"], row["final_f_gap"], row["objective_evals"])
 
 
 def select_best(rows: list[dict]) -> dict:
@@ -150,13 +163,14 @@ def search_1d(name: str, coarse_grid, runner, f_star: float):
     coarse_best = select_best(rows)
     best_step = float(coarse_best["parameters"]["step"])
     fine_grid = fine_linear_grid(coarse_grid, best_step, STEP_FINE_POINTS)
-    existing = {round(float(x), 14) for x in coarse_grid}
-    fine_only = [x for x in fine_grid if round(float(x), 14) not in existing]
-    print(f"[{name}] lưới tinh quanh step={best_step:g}: {len(fine_only)} cấu hình", flush=True)
-    for step in fine_only:
+    fine_rows: list[dict] = []
+    print(f"[{name}] lưới tinh quanh step={best_step:g}: {len(fine_grid)} cấu hình", flush=True)
+    for step in fine_grid:
         run = runner(float(step), SEARCH_ITERATIONS, False)
-        rows.append(run_summary(run, f_star, "fine"))
-    selected = select_best(rows)
+        row = run_summary(run, f_star, "fine")
+        rows.append(row)
+        fine_rows.append(row)
+    selected = select_best(fine_rows)
     return rows, coarse_best, selected
 
 
@@ -180,28 +194,26 @@ def search_backtracking(obj, w0, f_star: float):
         BACKTRACKING_RHO_COARSE, best_rho, BACKTRACKING_FINE_POINTS
     )
     c_fine = fine_log_grid(BACKTRACKING_C_COARSE, best_c, BACKTRACKING_FINE_POINTS)
-    existing = {
-        (round(float(rho), 14), round(float(c), 14))
-        for rho, c in pairs
-    }
     fine_pairs = [
         (rho, c) for rho in rho_fine for c in c_fine
-        if (round(rho, 14), round(c, 14)) not in existing
     ]
     print(
         f"[GD backtracking] lưới tinh quanh (rho={best_rho:g}, c={best_c:g}): "
         f"{len(fine_pairs)} cấu hình",
         flush=True,
     )
+    fine_rows: list[dict] = []
     for index, (rho, c) in enumerate(fine_pairs, start=1):
         run = run_gd_backtracking(
             obj, w0, BACKTRACKING_T0, rho, c, SEARCH_ITERATIONS,
             CONVERGENCE_TOL, False, BACKTRACKING_MAX_TRIALS,
         )
-        rows.append(run_summary(run, f_star, "fine"))
+        row = run_summary(run, f_star, "fine")
+        rows.append(row)
+        fine_rows.append(row)
         if index % 5 == 0 or index == len(fine_pairs):
             print(f"[GD backtracking] đã chạy {index}/{len(fine_pairs)} cấu hình tinh", flush=True)
-    selected = select_best(rows)
+    selected = select_best(fine_rows)
     return rows, coarse_best, selected
 
 
@@ -381,6 +393,7 @@ def main():
             "train": classification_metrics(X_train, y_train, w0),
             "test": classification_metrics(X_test, y_test, w0),
             "objective": float(obj.value(w0)),
+            "distance_to_reference": float(np.linalg.norm(w0 - reference.w_star)),
         }
     }
     for key, run in final_runs.items():
@@ -389,6 +402,7 @@ def main():
             "train": classification_metrics(X_train, y_train, run.w),
             "test": classification_metrics(X_test, y_test, run.w),
             "objective": float(obj.value(run.w)),
+            "distance_to_reference": float(np.linalg.norm(run.w - reference.w_star)),
         }
 
     sklearn_w, sklearn_time, sklearn_iterations = sklearn_solution(X_train, y_train)
@@ -397,6 +411,7 @@ def main():
         "train": classification_metrics(X_train, y_train, sklearn_w),
         "test": classification_metrics(X_test, y_test, sklearn_w),
         "objective": float(obj.value(sklearn_w)),
+        "distance_to_reference": float(np.linalg.norm(sklearn_w - reference.w_star)),
         "time_s": sklearn_time,
         "iterations": sklearn_iterations,
     }
@@ -406,8 +421,8 @@ def main():
             "search_iterations_per_candidate": SEARCH_ITERATIONS,
             "search_stages": ["coarse", "fine"],
             "selection_rule": (
-                "ưu tiên đạt ||grad||<=tol sớm trong 500 vòng; nếu chưa đạt, "
-                "chọn gradient norm cuối nhỏ nhất rồi objective gap"
+                "với cùng ngân sách 500 vòng, chọn gradient norm cuối nhỏ nhất; "
+                "nếu hòa thì dùng objective gap rồi số lần đánh giá objective"
             ),
             "final_run": "khởi tạo lại w0 và chạy tới hội tụ",
             "convergence_tolerance": CONVERGENCE_TOL,

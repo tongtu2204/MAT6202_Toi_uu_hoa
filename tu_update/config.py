@@ -15,24 +15,19 @@ LAMBDA = 1e-3
 BACKTRACKING_T0 = 20.0
 BACKTRACKING_MAX_TRIALS = 60
 
-# Lưới rộng, sau đó mã tự sinh một lưới tinh giữa hai điểm lân cận quanh ứng
-# viên tốt nhất. Mọi điểm của cả lưới thô và lưới tinh đều chạy 500 vòng.
-GD_STEP_COARSE = (
-    0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.80,
-    1.00, 1.20, 1.50, 1.80, 2.00, 2.20, 2.40, 2.60,
-    2.80, 3.00, 3.20, 3.40, 3.60, 4.00, 5.00, 8.00, 10.00,
-)
+# Lưới thô cố ý thưa: chỉ dùng để nhận diện vùng tham số ổn định/hội tụ.
+# Sau đó mã sinh lưới tinh trong khoảng hai điểm lân cận quanh ứng viên tốt
+# nhất. Mọi ứng viên ở cả hai giai đoạn đều chạy đúng 500 vòng.
+STEP_COARSE = (0.05, 0.10, 0.50, 1.00, 1.50, 2.00, 3.00, 5.00, 10.00)
+GD_STEP_COARSE = STEP_COARSE
+AGD_STEP_COARSE = STEP_COARSE
 
-AGD_STEP_COARSE = (
-    0.05, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.80,
-    1.00, 1.20, 1.40, 1.60, 1.80, 2.00, 2.20, 2.40,
-    2.60, 2.80, 3.00, 3.50, 4.00,
-)
-
-BACKTRACKING_RHO_COARSE = (0.05, 0.10, 0.20, 0.35, 0.50, 0.70, 0.90)
-BACKTRACKING_C_COARSE = (1e-4, 1e-3, 1e-2, 0.05, 0.10, 0.25, 0.50)
+# Backtracking dùng 3 x 3 = 9 cặp ở vòng thô; vòng tinh tiếp tục dùng 3 x 3
+# quanh cặp tốt nhất. t0 được giữ cố định để chỉ đánh giá vai trò của (rho, c).
+BACKTRACKING_RHO_COARSE = (0.10, 0.50, 0.90)
+BACKTRACKING_C_COARSE = (1e-4, 0.10, 0.50)
 
 STEP_FINE_POINTS = 9
-BACKTRACKING_FINE_POINTS = 5
+BACKTRACKING_FINE_POINTS = 3
 
 RANDOM_STATE = 42

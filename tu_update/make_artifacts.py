@@ -82,7 +82,10 @@ def write_model_csv(result, path):
         "accuracy", "balanced_accuracy", "precision", "recall", "f1",
         "roc_auc", "pr_auc", "log_loss",
     ]
-    fields = ["model", "label", "dataset", "objective", *metrics]
+    fields = [
+        "model", "label", "dataset", "objective",
+        "distance_to_reference", *metrics,
+    ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
@@ -93,68 +96,79 @@ def write_model_csv(result, path):
                     "label": row["label"],
                     "dataset": dataset,
                     "objective": row["objective"],
+                    "distance_to_reference": row["distance_to_reference"],
                     **{metric: row[dataset][metric] for metric in metrics},
                 })
 
 
-def _search_xy(search):
-    return [row for row in search["candidates"] if row["finite"]]
+def _same_parameters(left, right):
+    keys = set(left).union(right)
+    return all(
+        key in left and key in right
+        and np.isclose(float(left[key]), float(right[key]), rtol=0.0, atol=1e-12)
+        for key in keys
+    )
 
 
-def plot_searches(result, path):
-    fig, axes = plt.subplots(2, 2, figsize=(12, 8.5))
-    line_methods = [
-        ("gd_fixed", axes[0, 0], "GD: dò bước cố định"),
-        ("agd_constant", axes[1, 0], "AGD momentum cố định: dò bước"),
-        ("agd_dynamic", axes[1, 1], r"AGD $\beta_k=(k-2)/(k+1)$: dò bước"),
-    ]
-    for method, ax, title in line_methods:
-        rows = _search_xy(result["searches"][method])
-        for stage, marker, color in (("coarse", "o", "#315f9f"), ("fine", "x", "#d35400")):
-            stage_rows = sorted(
-                (row for row in rows if row["stage"] == stage),
-                key=lambda row: row["parameters"]["step"],
+def _candidate_label(method, parameters):
+    if method == "gd_backtracking":
+        return rf"$\rho$={parameters['rho']:.3g}, $c$={parameters['c']:.3g}"
+    return rf"$t$={parameters['step']:.4g}"
+
+
+def plot_method_search(result, method, path):
+    """Vẽ riêng đường hội tụ của dò thô và dò tinh cho một phương pháp."""
+    search = result["searches"][method]
+    f_star = float(result["objective"]["f_star"])
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5.2), sharex=True, sharey=True)
+    stage_specs = (
+        ("coarse", "Dò thử nghiệm thô", search["coarse_best"]),
+        ("fine", "Dò thử nghiệm tinh chỉnh", search["selected"]),
+    )
+    colors = plt.get_cmap("tab10")
+
+    for ax, (stage, stage_title, chosen) in zip(axes, stage_specs):
+        rows = [row for row in search["candidates"] if row["stage"] == stage]
+        if method == "gd_backtracking":
+            rows.sort(key=lambda row: (row["parameters"]["rho"], row["parameters"]["c"]))
+        else:
+            rows.sort(key=lambda row: row["parameters"]["step"])
+
+        for index, row in enumerate(rows):
+            trace = row["trace"]
+            gap = np.maximum(np.asarray(trace["objective"], dtype=float) - f_star, 1e-18)
+            selected = _same_parameters(row["parameters"], chosen["parameters"])
+            label = _candidate_label(method, row["parameters"])
+            if selected:
+                label += "  ← chọn"
+            ax.semilogy(
+                trace["iteration"], gap,
+                color="#c51b29" if selected else colors(index % 10),
+                lw=2.8 if selected else 1.15,
+                alpha=1.0 if selected else 0.72,
+                label=label,
+                zorder=5 if selected else 2,
             )
-            if stage_rows:
-                ax.semilogy(
-                    [row["parameters"]["step"] for row in stage_rows],
-                    [max(row["final_grad_norm"], 1e-18) for row in stage_rows],
-                    marker, ms=5, color=color, label=stage,
-                )
-        selected = result["searches"][method]["selected"]
-        ax.scatter(
-            selected["parameters"]["step"], max(selected["final_grad_norm"], 1e-18),
-            marker="*", s=180, color="#c51b29", edgecolor="black", linewidth=0.5,
-            label="được chọn", zorder=5,
-        )
-        ax.set(title=title, xlabel="Độ dài bước t", ylabel=r"$\|\nabla f\|$ sau 500 vòng")
-        ax.grid(True, which="both", alpha=0.25)
-        ax.legend(fontsize=8)
 
-    ax = axes[0, 1]
-    rows = _search_xy(result["searches"]["gd_backtracking"])
-    values = np.log10([max(row["final_grad_norm"], 1e-18) for row in rows])
-    scatter = ax.scatter(
-        [row["parameters"]["rho"] for row in rows],
-        [row["parameters"]["c"] for row in rows],
-        c=values, cmap="viridis_r", s=48,
-        marker="o", edgecolor="white", linewidth=0.3,
-    )
-    selected = result["searches"]["gd_backtracking"]["selected"]
-    ax.scatter(
-        selected["parameters"]["rho"], selected["parameters"]["c"],
-        marker="*", s=220, color="#c51b29", edgecolor="black", linewidth=0.6,
-        label="được chọn", zorder=5,
-    )
-    ax.set_yscale("log")
-    ax.set(title=r"GD backtracking: dò $(\rho,c)$", xlabel=r"$\rho$", ylabel=r"$c$")
-    ax.grid(True, which="both", alpha=0.25)
-    ax.legend(fontsize=8)
-    fig.colorbar(scatter, ax=ax, label=r"$\log_{10}\|\nabla f\|$ sau 500 vòng")
+        ax.set_title(stage_title, fontweight="bold")
+        ax.set_xlabel("Vòng lặp k (ngân sách 500 vòng)")
+        ax.grid(True, which="both", alpha=0.23)
+        ax.set_xlim(0, result["protocol"]["search_iterations_per_candidate"])
+        ax.set_ylim(1e-18, 10.0)
+        ax.legend(fontsize=7.3, ncol=1, loc="best", framealpha=0.92)
 
-    fig.suptitle("Dò thô và dò tinh — mỗi cấu hình chạy 500 vòng", fontsize=14)
-    fig.tight_layout()
-    fig.savefig(path, dpi=190)
+    axes[0].set_ylabel(r"Sai số mục tiêu $f(w_k)-f^*$ (thang log)")
+    fig.suptitle(
+        f"{METHOD_LABELS[method]} — đường hội tụ khi dò tham số",
+        fontsize=14,
+    )
+    fig.text(
+        0.5, 0.015,
+        "Mỗi đường là một cấu hình; đường đỏ đậm là cấu hình được chọn ở từng giai đoạn.",
+        ha="center", fontsize=9,
+    )
+    fig.tight_layout(rect=(0, 0.045, 1, 0.94))
+    fig.savefig(path, dpi=190, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -183,28 +197,82 @@ def plot_hierarchical_comparison(result, path):
     plt.close(fig)
 
 
+def plot_all_methods(result, path):
+    """So sánh cuối cùng cả bốn cấu hình đã khóa theo vòng lặp và thời gian."""
+    f_star = float(result["objective"]["f_star"])
+    colors = {
+        "gd_fixed": "#315f9f",
+        "gd_backtracking": "#4c9f70",
+        "agd_constant": "#d35400",
+        "agd_dynamic": "#8e5aa7",
+    }
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5.2))
+    for key in ("gd_fixed", "gd_backtracking", "agd_constant", "agd_dynamic"):
+        row = result["finalists"][key]
+        trace = row["trace"]
+        gap = np.maximum(np.asarray(trace["objective"], dtype=float) - f_star, 1e-18)
+        axes[0].semilogy(
+            trace["iteration"], gap, lw=2.0, color=colors[key], label=METHOD_LABELS[key]
+        )
+        axes[1].semilogy(
+            trace["time_s"], gap, lw=2.0, color=colors[key], label=METHOD_LABELS[key]
+        )
+
+    axes[0].set(
+        title="Độ chính xác theo số vòng",
+        xlabel="Vòng lặp k",
+        ylabel=r"$f(w_k)-f^*$ (thang log)",
+    )
+    axes[1].set(
+        title="Độ chính xác theo thời gian",
+        xlabel="Thời gian (giây)",
+        ylabel=r"$f(w_k)-f^*$ (thang log)",
+    )
+    for ax in axes:
+        ax.grid(True, which="both", alpha=0.23)
+        ax.legend(fontsize=8)
+    fig.suptitle("So sánh cuối cùng bốn phương pháp sau khi khóa tham số", fontsize=14)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    fig.savefig(path, dpi=190, bbox_inches="tight")
+    plt.close(fig)
+
+
 def plot_model_metrics(result, path):
-    gd_winner = result["comparisons"]["gd_internal"]["winner"]
-    agd_winner = result["comparisons"]["agd_internal"]["winner"]
-    keys = ["untrained_w0", gd_winner, agd_winner, "sklearn_reference"]
-    labels = ["Chưa tối ưu", "GD tốt nhất", "AGD tốt nhất", "scikit-learn"]
+    keys = [
+        "untrained_w0", "gd_fixed", "gd_backtracking",
+        "agd_constant", "agd_dynamic", "sklearn_reference",
+    ]
+    labels = [
+        "Chưa tối ưu", "GD cố định", "GD backtracking",
+        "AGD cố định", "AGD động", "scikit-learn",
+    ]
     metrics = ["accuracy", "balanced_accuracy", "f1", "roc_auc", "pr_auc"]
     metric_labels = ["Accuracy", "Balanced acc.", "F1", "ROC-AUC", "PR-AUC"]
     x = np.arange(len(metrics))
-    width = 0.19
-    fig, ax = plt.subplots(figsize=(11, 5.2))
-    colors = ("#9e9e9e", "#315f9f", "#d35400", "#4c9f70")
+    width = 0.135
+    fig, axes = plt.subplots(1, 2, figsize=(15, 5.4), gridspec_kw={"width_ratios": [3.2, 1]})
+    ax = axes[0]
+    colors = ("#9e9e9e", "#315f9f", "#4c9f70", "#d35400", "#8e5aa7", "#333333")
     for index, (key, label, color) in enumerate(zip(keys, labels, colors)):
         values = [result["model_metrics"][key]["test"][metric] for metric in metrics]
-        ax.bar(x + (index - 1.5) * width, values, width, label=label, color=color)
+        ax.bar(x + (index - 2.5) * width, values, width, label=label, color=color)
     ax.set_xticks(x, metric_labels)
     ax.set_ylim(0, 1.02)
     ax.set_ylabel("Giá trị trên tập test")
-    ax.set_title("Chất lượng mô hình trước và sau tối ưu")
+    ax.set_title("Các chỉ số phân loại (cao hơn tốt hơn)")
     ax.grid(True, axis="y", alpha=0.25)
-    ax.legend(ncol=2)
-    fig.tight_layout()
-    fig.savefig(path, dpi=190)
+    ax.legend(ncol=3, fontsize=8)
+
+    log_losses = [result["model_metrics"][key]["test"]["log_loss"] for key in keys]
+    axes[1].bar(np.arange(len(keys)), log_losses, color=colors)
+    axes[1].set_xticks(np.arange(len(keys)), labels, rotation=35, ha="right")
+    axes[1].set_ylabel("Log-loss trên tập test")
+    axes[1].set_title("Log-loss (thấp hơn tốt hơn)")
+    axes[1].grid(True, axis="y", alpha=0.25)
+
+    fig.suptitle("Chất lượng mô hình trước và sau tối ưu", fontsize=14)
+    fig.tight_layout(rect=(0, 0, 1, 0.94))
+    fig.savefig(path, dpi=190, bbox_inches="tight")
     plt.close(fig)
 
 
@@ -265,17 +333,21 @@ def write_summary(result, path):
         "",
         "## Chất lượng mô hình trên test",
         "",
-        "| Mô hình | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Log-loss |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
+        "| Mô hình | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Log-loss | ||w−w*|| |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
-    model_keys = ["untrained_w0", gd_winner, agd_winner, "sklearn_reference"]
+    model_keys = [
+        "untrained_w0", "gd_fixed", "gd_backtracking",
+        "agd_constant", "agd_dynamic", "sklearn_reference",
+    ]
     for key in model_keys:
         row = result["model_metrics"][key]
         metric = row["test"]
         lines.append(
             f"| {row['label']} | {_fmt(metric['accuracy'])} | {_fmt(metric['balanced_accuracy'])} | "
             f"{_fmt(metric['precision'])} | {_fmt(metric['recall'])} | {_fmt(metric['f1'])} | "
-            f"{_fmt(metric['roc_auc'])} | {_fmt(metric['pr_auc'])} | {_fmt(metric['log_loss'])} |"
+            f"{_fmt(metric['roc_auc'])} | {_fmt(metric['pr_auc'])} | {_fmt(metric['log_loss'])} | "
+            f"{_fmt(row['distance_to_reference'])} |"
         )
 
     before = result["model_metrics"]["untrained_w0"]["test"]
@@ -295,8 +367,12 @@ def write_summary(result, path):
         "- `search_results.csv`: toàn bộ ứng viên tham số.",
         "- `optimization_results.csv`: bốn cấu hình chạy tới hội tụ.",
         "- `model_metrics.csv`: metric train/test trước và sau tối ưu.",
-        "- `parameter_search.png`: bốn phép dò tham số.",
+        "- `search_gd_fixed.png`: dò thô/tinh của GD bước cố định.",
+        "- `search_gd_backtracking.png`: dò thô/tinh của GD backtracking.",
+        "- `search_agd_constant.png`: dò thô/tinh của AGD momentum cố định.",
+        "- `search_agd_dynamic.png`: dò thô/tinh của AGD momentum động.",
         "- `hierarchical_comparison.png`: so GD, so AGD, rồi GD–AGD.",
+        "- `all_methods_comparison.png`: cả bốn đường theo số vòng và thời gian.",
         "- `model_comparison.png`: metric test trước và sau tối ưu.",
         "",
     ]
@@ -310,8 +386,10 @@ def generate_artifacts(result_path):
     write_search_csv(result, output / "search_results.csv")
     write_optimization_csv(result, output / "optimization_results.csv")
     write_model_csv(result, output / "model_metrics.csv")
-    plot_searches(result, output / "parameter_search.png")
+    for method in ("gd_fixed", "gd_backtracking", "agd_constant", "agd_dynamic"):
+        plot_method_search(result, method, output / f"search_{method}.png")
     plot_hierarchical_comparison(result, output / "hierarchical_comparison.png")
+    plot_all_methods(result, output / "all_methods_comparison.png")
     plot_model_metrics(result, output / "model_comparison.png")
     write_summary(result, output / "summary.md")
     print(f"Đã sinh bảng, hình và tóm tắt tại {output}", flush=True)

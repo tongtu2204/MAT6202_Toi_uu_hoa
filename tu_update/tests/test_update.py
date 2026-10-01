@@ -16,6 +16,7 @@ from gd_agd_runner import (  # noqa: E402
     run_gd_backtracking,
     run_gd_fixed,
 )
+from run_experiments import fine_linear_grid, fine_log_grid  # noqa: E402
 
 
 class Quadratic:
@@ -66,6 +67,12 @@ class UpdateTests(unittest.TestCase):
         self.assertTrue(run.converged)
         self.assertLess(run.converged_at, 200)
         self.assertEqual(run.iterations[-1], run.converged_at)
+
+    def test_fine_grids_keep_coarse_winner_at_center(self):
+        linear = fine_linear_grid((1.0, 2.0, 5.0), 2.0, 9)
+        logarithmic = fine_log_grid((1e-4, 0.1, 0.5), 0.1, 3)
+        self.assertEqual(linear[4], 2.0)
+        self.assertEqual(logarithmic[1], 0.1)
 
 
 if __name__ == "__main__":

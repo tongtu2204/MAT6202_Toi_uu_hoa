@@ -36,14 +36,14 @@
 
 ## Chất lượng mô hình trên test
 
-| Mô hình | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Log-loss | ||w−w*|| |
-|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Chưa tối ưu (w0=0) | 0.1369 | 0.5000 | 0.1369 | 1.0000 | 0.2409 | 0.5000 | 0.1369 | 0.6931 | 4.2156 |
-| GD bước cố định | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 | 5.107e-06 |
-| GD backtracking | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 | 3.791e-06 |
-| AGD momentum cố định | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 | 3.017e-06 |
-| AGD momentum (k-2)/(k+1) | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 | 2.499e-06 |
-| LogisticRegression (scikit-learn) | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 | 5.885e-06 |
+| Mô hình | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Log-loss |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| Chưa tối ưu (w0=0) | 0.1369 | 0.5000 | 0.1369 | 1.0000 | 0.2409 | 0.5000 | 0.1369 | 0.6931 |
+| GD bước cố định | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 |
+| GD backtracking | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 |
+| AGD momentum cố định | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 |
+| AGD momentum (k-2)/(k+1) | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 |
+| LogisticRegression (scikit-learn) | 0.8997 | 0.7070 | 0.7173 | 0.4417 | 0.5467 | 0.9168 | 0.6416 | 0.2370 |
 
 ## Diễn giải chính
 
@@ -63,4 +63,4 @@
 - `search_agd_dynamic.png`: dò thô/tinh của AGD momentum động.
 - `hierarchical_comparison.png`: so GD, so AGD, rồi GD–AGD.
 - `all_methods_comparison.png`: cả bốn đường theo số vòng và thời gian.
-- `model_comparison.png`: metric test trước và sau tối ưu.
+- `model_comparison.md`: bảng metric test trước và sau tối ưu.

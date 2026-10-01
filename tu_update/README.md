@@ -26,6 +26,8 @@ Thư mục độc lập để sửa phần GD/AGD theo nhận xét của giảng
    theo số vòng và thời gian.
 8. Báo cáo Accuracy, Balanced Accuracy, Precision, Recall, F1, ROC-AUC,
    PR-AUC và Log-loss trước/sau tối ưu, cùng nghiệm scikit-learn làm mốc.
+   Chất lượng mô hình được trình bày bằng bảng trong `model_comparison.md`
+   và `summary.md`; dữ liệu đầy đủ nằm trong `model_metrics.csv`.
 
 ## Chạy
 

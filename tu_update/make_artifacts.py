@@ -237,43 +237,38 @@ def plot_all_methods(result, path):
     plt.close(fig)
 
 
-def plot_model_metrics(result, path):
-    keys = [
+def model_table_lines(result):
+    keys = (
         "untrained_w0", "gd_fixed", "gd_backtracking",
         "agd_constant", "agd_dynamic", "sklearn_reference",
+    )
+    metrics = (
+        "accuracy", "balanced_accuracy", "precision", "recall", "f1",
+        "roc_auc", "pr_auc", "log_loss",
+    )
+    lines = [
+        "| Mô hình | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Log-loss |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
     ]
-    labels = [
-        "Chưa tối ưu", "GD cố định", "GD backtracking",
-        "AGD cố định", "AGD động", "scikit-learn",
+    for key in keys:
+        row = result["model_metrics"][key]
+        values = " | ".join(_fmt(row["test"][metric]) for metric in metrics)
+        lines.append(f"| {row['label']} | {values} |")
+    return lines
+
+
+def write_model_table(result, path):
+    lines = [
+        "# Chất lượng mô hình trên tập test",
+        "",
+        *model_table_lines(result),
+        "",
+        "Các chỉ số được làm tròn đến bốn chữ số thập phân. Log-loss thấp hơn là tốt hơn; các chỉ số còn lại cao hơn là tốt hơn.",
+        "Các phương pháp sau hội tụ cho chất lượng dự đoán gần như bằng nhau; khác biệt chính nằm ở tốc độ hội tụ.",
+        "Giá trị đầy đủ của cả train và test được lưu trong `model_metrics.csv`.",
+        "",
     ]
-    metrics = ["accuracy", "balanced_accuracy", "f1", "roc_auc", "pr_auc"]
-    metric_labels = ["Accuracy", "Balanced acc.", "F1", "ROC-AUC", "PR-AUC"]
-    x = np.arange(len(metrics))
-    width = 0.135
-    fig, axes = plt.subplots(1, 2, figsize=(15, 5.4), gridspec_kw={"width_ratios": [3.2, 1]})
-    ax = axes[0]
-    colors = ("#9e9e9e", "#315f9f", "#4c9f70", "#d35400", "#8e5aa7", "#333333")
-    for index, (key, label, color) in enumerate(zip(keys, labels, colors)):
-        values = [result["model_metrics"][key]["test"][metric] for metric in metrics]
-        ax.bar(x + (index - 2.5) * width, values, width, label=label, color=color)
-    ax.set_xticks(x, metric_labels)
-    ax.set_ylim(0, 1.02)
-    ax.set_ylabel("Giá trị trên tập test")
-    ax.set_title("Các chỉ số phân loại (cao hơn tốt hơn)")
-    ax.grid(True, axis="y", alpha=0.25)
-    ax.legend(ncol=3, fontsize=8)
-
-    log_losses = [result["model_metrics"][key]["test"]["log_loss"] for key in keys]
-    axes[1].bar(np.arange(len(keys)), log_losses, color=colors)
-    axes[1].set_xticks(np.arange(len(keys)), labels, rotation=35, ha="right")
-    axes[1].set_ylabel("Log-loss trên tập test")
-    axes[1].set_title("Log-loss (thấp hơn tốt hơn)")
-    axes[1].grid(True, axis="y", alpha=0.25)
-
-    fig.suptitle("Chất lượng mô hình trước và sau tối ưu", fontsize=14)
-    fig.tight_layout(rect=(0, 0, 1, 0.94))
-    fig.savefig(path, dpi=190, bbox_inches="tight")
-    plt.close(fig)
+    path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def write_summary(result, path):
@@ -333,22 +328,8 @@ def write_summary(result, path):
         "",
         "## Chất lượng mô hình trên test",
         "",
-        "| Mô hình | Accuracy | Balanced Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Log-loss | ||w−w*|| |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+        *model_table_lines(result),
     ]
-    model_keys = [
-        "untrained_w0", "gd_fixed", "gd_backtracking",
-        "agd_constant", "agd_dynamic", "sklearn_reference",
-    ]
-    for key in model_keys:
-        row = result["model_metrics"][key]
-        metric = row["test"]
-        lines.append(
-            f"| {row['label']} | {_fmt(metric['accuracy'])} | {_fmt(metric['balanced_accuracy'])} | "
-            f"{_fmt(metric['precision'])} | {_fmt(metric['recall'])} | {_fmt(metric['f1'])} | "
-            f"{_fmt(metric['roc_auc'])} | {_fmt(metric['pr_auc'])} | {_fmt(metric['log_loss'])} | "
-            f"{_fmt(row['distance_to_reference'])} |"
-        )
 
     before = result["model_metrics"]["untrained_w0"]["test"]
     after = result["model_metrics"][overall]["test"]
@@ -373,7 +354,7 @@ def write_summary(result, path):
         "- `search_agd_dynamic.png`: dò thô/tinh của AGD momentum động.",
         "- `hierarchical_comparison.png`: so GD, so AGD, rồi GD–AGD.",
         "- `all_methods_comparison.png`: cả bốn đường theo số vòng và thời gian.",
-        "- `model_comparison.png`: metric test trước và sau tối ưu.",
+        "- `model_comparison.md`: bảng metric test trước và sau tối ưu.",
         "",
     ]
     path.write_text("\n".join(lines), encoding="utf-8")
@@ -390,7 +371,8 @@ def generate_artifacts(result_path):
         plot_method_search(result, method, output / f"search_{method}.png")
     plot_hierarchical_comparison(result, output / "hierarchical_comparison.png")
     plot_all_methods(result, output / "all_methods_comparison.png")
-    plot_model_metrics(result, output / "model_comparison.png")
+    write_model_table(result, output / "model_comparison.md")
+    (output / "model_comparison.png").unlink(missing_ok=True)
     write_summary(result, output / "summary.md")
     print(f"Đã sinh bảng, hình và tóm tắt tại {output}", flush=True)
 

@@ -8,6 +8,7 @@ for variable in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS",
     os.environ[variable] = "1"
 
 import argparse
+import ast
 import csv
 import hashlib
 import json
@@ -54,7 +55,12 @@ def write_json(path, value):
 
 def source_hash():
     digest = hashlib.sha256()
-    for path in (Path(__file__), HERE / "config.py", HERE / "gd_agd_runner.py",
+    # Rendering changes must not invalidate already-computed optimization runs.
+    nodes = ast.parse(Path(__file__).read_text(encoding="utf-8")).body
+    computation = [node for node in nodes if isinstance(node, ast.FunctionDef)
+                   and node.name not in {"source_hash", "export_stage"}]
+    digest.update(ast.dump(ast.Module(body=computation, type_ignores=[])).encode())
+    for path in (HERE / "config.py", HERE / "gd_agd_runner.py",
                  HERE / "run_experiments.py", ORIGINAL / "optim/objective.py",
                  ORIGINAL / "optim/reference.py", ORIGINAL / "optim/optimizers/newton.py",
                  ORIGINAL / "optim/linesearch.py", HERE / "evaluation.py"):
@@ -166,8 +172,7 @@ def export_stage(result, directory):
                     np.maximum(np.asarray(row["trace"]["objective"]) - result["reference"]["f_star"], 1e-16),
                     label=label, linewidth=1.5)
     stage_label = {"coarse": "dò thô", "fine": "dò tinh", "final": "chạy tới hội tụ"}[result["stage"]]
-    ax.set(title=f"{LABELS[result['method']]} — {stage_label}\n75.026 dòng × 415 biến; λ=0,001",
-           xlabel="Số bước cập nhật k", ylabel=r"$f(w_k)-f^*$ (thang log)")
+    ax.set(xlabel="Số bước cập nhật k", ylabel=r"$f(w_k)-f^*$ (thang log)")
     ax.grid(True, which="both", alpha=0.23)
     ax.legend(fontsize=8, ncol=2)
     fig.tight_layout()
@@ -178,11 +183,12 @@ def export_stage(result, directory):
              f"- Dữ liệu: `{result['data']['path']}`; 75.026 × 415; không chia lại.",
              f"- SHA-256: `{result['data']['sha256']}`.",
              f"- f* (Newton) = {result['reference']['f_star']:.12f}; λ=0,001; w0=0.",
-             f"- Chuẩn dừng: ||gradient|| ≤ {CONVERGENCE_TOL:g}; BLAS một luồng.",
+             f"- Chuẩn dừng của lượt chạy cuối: ||gradient|| ≤ {CONVERGENCE_TOL:g}; BLAS một luồng.",
              "- Dò thô/tinh: 500 bước/cấu hình; chọn chuẩn gradient cuối nhỏ nhất, sau đó gap và số objective.",
-             "- Chỉ báo cáo hội tụ khi chuẩn gradient đạt ngưỡng; đường giảm không đủ để kết luận hội tụ.",
+             "- Dò thô chỉ cần nhận diện vùng có dấu hiệu hội tụ, không yêu cầu đạt ngưỡng dừng.",
+             "- Dò tinh so sánh độ giảm sai số trong cùng 500 bước; ngưỡng dừng dùng cho lượt chạy cuối.",
              f"- Cấu hình chọn: `{selected['parameters']}`.", "",
-             "| Cấu hình | Bước | f−f* cuối | Gradient cuối | Thời gian (s) | Đạt ngưỡng |",
+             "| Cấu hình | Bước | f−f* cuối | Gradient cuối | Thời gian (s) | Gradient ≤ 1e-8 |",
              "|---|---:|---:|---:|---:|---|"]
     for row in rows:
         lines.append(f"| {row['parameters']} | {row['iterations_run']} | {row['final_f_gap']:.3e} | "

@@ -4,12 +4,14 @@ Cập nhật ngày 02/10/2026. Mỗi giai đoạn hoàn tất phải được l�
 
 | Phương pháp | Dò thô | Dò tinh | Chạy cuối |
 |---|---|---|---|
-| GD cố định | Hoàn tất; chọn t=0,5 | Chưa chạy | Chưa chạy |
+| GD cố định | Hoàn tất; vùng có dấu hiệu hội tụ, tốt nhất t=0,5 | Hoàn tất; chọn t=0,5 | Chưa chạy |
 | GD backtracking | Chưa chạy lại | Chưa chạy lại | Chưa chạy |
 | AGD momentum hằng | Chưa chạy | Chưa chạy | Chưa chạy |
 | AGD momentum biến thiên | Chưa chạy | Chưa chạy | Chưa chạy |
 
-GD thô: 9 cấu hình × 500 bước, không cấu hình nào đạt chuẩn gradient 1e-8.
+GD thô: 9 cấu hình × 500 bước. Các bước 0,05; 0,1; 0,5 có dấu hiệu hội tụ; không yêu cầu đạt ngưỡng dừng trong dò thô.
+GD tinh: 9 cấu hình × 500 bước; chọn t=0,5, gap=5,836e-4, gradient=1,954e-3. Từ 0,625 trở lên xuất hiện dao động kéo dài.
+Hình GD thô và tinh không có tiêu đề; chỉ giữ nhãn trục và chú giải.
 Đã kiểm tra cả 9 lịch sử objective khớp lượt GD thô đã lưu trong 6e279cb (sai số tuyệt đối ≤1e-12).
 Sáu kiểm tra thuật toán có sẵn đã đạt; script từ chối dữ liệu 35.115 × 40 do hash không khớp.
 Chạy lại lệnh GD thô tiếp tục dùng checkpoint, không chạy lại 9 cấu hình.
@@ -17,10 +19,10 @@ Chạy lại lệnh GD thô tiếp tục dùng checkpoint, không chạy lại 9
 ## Bước tiếp theo
 
 ```bash
-python tu_update/run_full_data_stage.py --method gd_fixed --stage fine
+python tu_update/run_full_data_stage.py --method gd_backtracking --stage coarse
 ```
 
-Lưới tinh sinh từ lưới thô: {0,1; 0,2; 0,3; 0,4; 0,5; 0,625; 0,75; 0,875; 1}.
-Khi xong, kiểm tra và lưu `gd_fixed/fine/` lên Git, rồi chuyển sang GD backtracking dò thô.
+Lưới GD tinh đã chạy: {0,1; 0,2; 0,3; 0,4; 0,5; 0,625; 0,75; 0,875; 1}.
+Khi GD backtracking dò thô xong, kiểm tra và lưu `gd_backtracking/coarse/` lên Git trước khi dò tinh.
 
 Tệp đầy đủ có X_test rỗng; bảng chất lượng sau cùng là in-sample. Chưa sửa `.tex`.

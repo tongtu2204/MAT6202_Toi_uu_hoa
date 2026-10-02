@@ -11,6 +11,7 @@
 - Giữ hàm mục tiêu logistic của Tài, λ=0,001, intercept không phạt, w0=0 và công thức momentum.
 - Bốn phương pháp: GD cố định; GD backtracking; AGD momentum hằng; AGD momentum biến thiên.
 - Dò thô/tinh: 500 bước mỗi cấu hình. Chọn chuẩn gradient cuối nhỏ nhất, rồi objective gap và số objective.
+- Dò thô chỉ tìm vùng có dấu hiệu hội tụ; không yêu cầu đạt ngưỡng dừng. Ngưỡng 1e-8 dành cho lượt chạy cuối.
 - Chạy cuối: từ w0 đến `||gradient|| <= 1e-8`, trần 50.000 bước; 3 lần đo thời gian.
 - BLAS một luồng. Không sửa `.tex` trong lượt thí nghiệm này.
 
@@ -54,6 +55,7 @@ Kết quả mới ở `tu_update/artifacts/full_data/<method>/<stage>/`:
 - `search_results.csv`: bảng cấu hình và chỉ số tối ưu.
 - `summary.md`: tóm tắt kết quả thật, cấu hình chọn và trạng thái hội tụ.
 - `convergence.png`: **một biểu đồ riêng**, chỉ vẽ `f(w_k)-f*` trên trục log.
+  Hình không có tiêu đề; chỉ giữ nhãn trục và chú giải. Tên hình sẽ đặt trong báo cáo.
 
 Tám giai đoạn dò tạo tám hình riêng. Sau lượt final sẽ bổ sung một hình so sánh
 cả bốn phương pháp. Không dùng heatmap thay đường hội tụ backtracking.

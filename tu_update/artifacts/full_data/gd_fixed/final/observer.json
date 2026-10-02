@@ -8,6 +8,11 @@
       "candidate_index": 0,
       "checkpoint_overhead_s": 0.19012608700177225,
       "elapsed_s": 491.65545628700056
+    },
+    {
+      "candidate_index": 1,
+      "checkpoint_overhead_s": 0.19030919699980586,
+      "elapsed_s": 490.5087579129995
     }
   ]
 }

@@ -33,6 +33,19 @@ python tu_update/run_full_data_stage.py --method agd_dynamic --stage fine
 Sau khi cả bốn phương pháp đã khóa cấu hình, chạy riêng `--stage final` cho từng phương pháp.
 Sau đó tổng hợp so sánh cả bốn và bảng chất lượng mô hình.
 
+Lượt final có thể dùng runner ghi tiến độ sau mỗi 2.000 bước, giữ nguyên phép
+tính của optimizer. Ví dụ chạy và kiểm tra GD bước cố định:
+
+```bash
+python tu_update/run_full_data_with_progress.py --method gd_fixed --stage final
+python tu_update/validate_full_data_final.py --method gd_fixed
+```
+
+Đổi `--method` cho từng phương pháp còn lại. Mỗi giai đoạn vẫn đo 3 lần từ w0=0;
+thời gian ghi checkpoint được tính trong thời gian đo và lưu riêng ở `observer.json`.
+Các lần đo đã hoàn thành được nối tiếp tự động. Lần đo bị gián đoạn sẽ chạy lại
+từ w0=0; `progress.json` giữ snapshot trọng số, chỉ số và lịch sử của mốc gần nhất.
+
 Với GD backtracking, nếu ngoại suy lưới tinh vượt `rho=1`, dò một phía trong
 khoảng hai giá trị thô hợp lệ để giữ đủ 3 điểm rho và giữ ứng viên thắng.
 Từ kết quả thô `(rho=0,9, c=0,5)`, lưới tinh là
@@ -61,10 +74,15 @@ Kết quả mới ở `tu_update/artifacts/full_data/<method>/<stage>/`:
 - `summary.md`: tóm tắt kết quả thật, cấu hình chọn và trạng thái hội tụ.
 - `convergence.png`: **một biểu đồ riêng**, chỉ vẽ `f(w_k)-f*` trên trục log.
   Hình không có tiêu đề; chỉ giữ nhãn trục và chú giải. Tên hình sẽ đặt trong báo cáo.
+- `validation.json`: kiểm tra nghiệm cuối, điều kiện dừng, tái lập số học và chỉ số mô hình.
+- Lượt final có ghi tiến độ: `progress.json` và `observer.json` lưu checkpoint cùng
+  phiên bản script quan sát và thời gian ghi checkpoint.
 
 Tám giai đoạn dò tạo tám hình riêng. Sau lượt final sẽ bổ sung một hình so sánh
 cả bốn phương pháp. Không dùng heatmap thay đường hội tụ backtracking.
 `reference.json` lưu nghiệm Newton và hệ số momentum hằng tính theo giao thức cũ.
+`selected_configurations.json` lưu bốn cấu hình khóa sau khi dò cùng nguồn chọn;
+lượt final dùng đúng cấu hình của kết quả dò tinh tương ứng.
 
 Các artifact ở trực tiếp `tu_update/artifacts/` là lượt cũ trên dữ liệu khác.
 `artifacts/full_data_gd_coarse/` là GD thô đầy đủ đã lưu trong commit `6e279cb`;

@@ -1,0 +1,13 @@
+{
+  "script": "tu_update/run_full_data_with_progress.py",
+  "source_sha256": "33c79850199b1ca368a07afcde5401fa17c8f1fef6bf730926765d8bf576bc28",
+  "interval_updates": 2000,
+  "timing_includes_checkpoint_overhead": true,
+  "repeats": [
+    {
+      "candidate_index": 0,
+      "checkpoint_overhead_s": 0.19012608700177225,
+      "elapsed_s": 491.65545628700056
+    }
+  ]
+}

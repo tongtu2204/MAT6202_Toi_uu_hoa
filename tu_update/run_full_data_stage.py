@@ -132,6 +132,13 @@ def parameters_for(method, stage, fingerprint, beta):
         if stage == "fine":
             best = previous_stage(method, "coarse", fingerprint)["selected"]["parameters"]
             rho = fine_linear_grid(rho, best["rho"], BACKTRACKING_FINE_POINTS)
+            if any(not 0 < value < 1 for value in rho):
+                # Refine inside the valid coarse interval when extrapolation
+                # crosses rho=1; retain three points and the coarse winner.
+                lower = max(value for value in BACKTRACKING_RHO_COARSE
+                            if value < best["rho"])
+                rho = tuple(float(value) for value in
+                            np.linspace(lower, best["rho"], BACKTRACKING_FINE_POINTS))
             c = fine_log_grid(c, best["c"], BACKTRACKING_FINE_POINTS)
         # Boundary winner may expand the linear grid beyond Armijo's domain.
         rho = tuple(x for x in rho if 0 < x < 1)

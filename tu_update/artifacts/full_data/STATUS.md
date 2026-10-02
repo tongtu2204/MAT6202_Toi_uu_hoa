@@ -5,7 +5,7 @@ Cập nhật ngày 02/10/2026. Mỗi giai đoạn hoàn tất phải được l�
 | Phương pháp | Dò thô | Dò tinh | Chạy cuối |
 |---|---|---|---|
 | GD cố định | Hoàn tất; vùng có dấu hiệu hội tụ, tốt nhất t=0,5 | Hoàn tất; chọn t=0,5 | Chưa chạy |
-| GD backtracking | Hoàn tất; chọn rho=0.9, c=0.5, t0=20 | Chưa chạy | Chưa chạy |
+| GD backtracking | Hoàn tất; chọn rho=0.9, c=0.5, t0=20 | Đang chạy 9 cấu hình | Chưa chạy |
 | AGD momentum hằng | Chưa chạy | Chưa chạy | Chưa chạy |
 | AGD momentum biến thiên | Chưa chạy | Chưa chạy | Chưa chạy |
 
@@ -30,3 +30,6 @@ Checkpoint được lưu lên Git sau 3, 6, 7, 8 cấu hình trước khi lưu g
 Hình GD backtracking thô không có tiêu đề. Bước tiếp theo là dò tinh quanh cấu hình chọn.
 
 Tệp đầy đủ có X_test rỗng; bảng chất lượng sau cùng là in-sample. Chưa sửa `.tex`.
+
+Lưới backtracking tinh: rho={0,5; 0,7; 0,9} × c={0,1; 0,5; 0,99}; giữ t0=20.
+Đã sửa cách dò một phía ở biên rho để giữ 9 cặp hợp lệ; các lưới đã chạy và quy tắc tối ưu không đổi.

@@ -2,7 +2,7 @@
   "status": "complete",
   "fingerprint": {
     "data_sha256": "0c54d5d6c88667ae067cbf3be55df2f749d2c89e1a1f37c3e07fef60855f56d4",
-    "source_sha256": "814c2c269301e38ecb6681d3403e658116867fa85ad416cbb5cc3aa955025e74"
+    "source_sha256": "8e877b8099df6d047ef90fd3362664517075daeccb2edf245394c086d417e2fc"
   },
   "data": {
     "path": "bai-lam-taitt/5_ma_nguon_tai_lap/artifacts/ridge.npz",
@@ -22213,5 +22213,12 @@
     "prior_source_sha256": "315ee2bacda61dbc3729ae01e11f72cef83e1db0c7b7ac315978ae930918793d",
     "prior_git_commit": "a8da55181690b4ca41db2ae562893887703903ab",
     "reason": "Verified identical computation AST and dependency bytes; exclude chart rendering from hash"
-  }
+  },
+  "protocol_migrations": [
+    {
+      "prior_source_sha256": "814c2c269301e38ecb6681d3403e658116867fa85ad416cbb5cc3aa955025e74",
+      "prior_git_commit": "6c80cf4c99d3d1c66e2094c8e3e9bbdf2c5b8ce7",
+      "reason": "Only fine rho boundary handling changed; optimizer execution and all existing candidate grids verified unchanged"
+    }
+  ]
 }

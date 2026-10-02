@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 import numpy as np
@@ -17,6 +18,7 @@ from gd_agd_runner import (  # noqa: E402
     run_gd_fixed,
 )
 from run_experiments import fine_linear_grid, fine_log_grid  # noqa: E402
+from run_full_data_stage import parameters_for  # noqa: E402
 
 
 class Quadratic:
@@ -73,6 +75,17 @@ class UpdateTests(unittest.TestCase):
         logarithmic = fine_log_grid((1e-4, 0.1, 0.5), 0.1, 3)
         self.assertEqual(linear[4], 2.0)
         self.assertEqual(logarithmic[1], 0.1)
+
+    def test_backtracking_boundary_winner_has_nine_valid_fine_candidates(self):
+        prior = {"selected": {"parameters": {"rho": 0.9, "c": 0.5}}}
+        with patch("run_full_data_stage.previous_stage", return_value=prior):
+            grid = parameters_for("gd_backtracking", "fine", {}, 0.0)
+        pairs = {(row["rho"], row["c"]) for row in grid}
+        self.assertEqual(len(pairs), 9)
+        self.assertIn((0.9, 0.5), pairs)
+        self.assertTrue(all(0 < rho < 1 and 0 < c < 1 for rho, c in pairs))
+        self.assertTrue(any(rho not in {0.1, 0.5, 0.9} for rho, c in pairs))
+        self.assertTrue(all(row["t0"] == 20 for row in grid))
 
 
 if __name__ == "__main__":

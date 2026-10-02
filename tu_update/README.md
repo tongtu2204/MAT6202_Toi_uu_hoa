@@ -33,6 +33,11 @@ python tu_update/run_full_data_stage.py --method agd_dynamic --stage fine
 Sau khi cả bốn phương pháp đã khóa cấu hình, chạy riêng `--stage final` cho từng phương pháp.
 Sau đó tổng hợp so sánh cả bốn và bảng chất lượng mô hình.
 
+Với GD backtracking, nếu ngoại suy lưới tinh vượt `rho=1`, dò một phía trong
+khoảng hai giá trị thô hợp lệ để giữ đủ 3 điểm rho và giữ ứng viên thắng.
+Từ kết quả thô `(rho=0,9, c=0,5)`, lưới tinh là
+`rho={0,5; 0,7; 0,9}` × `c={0,1; 0,5; 0,99}`, giữ `t0=20`.
+
 Mỗi cấu hình hoàn thành được ghi ngay vào `results.json` bằng thay thế file nguyên tử.
 Chạy lại cùng lệnh sẽ tiếp tục từ cấu hình kế tiếp; không chạy lại phần đã lưu.
 Checkpoint kiểm tra hash dữ liệu, mã nguồn và lưới tham số. Nếu khác, cần lưu riêng

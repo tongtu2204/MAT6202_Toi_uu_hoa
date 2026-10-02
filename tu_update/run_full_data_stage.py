@@ -193,17 +193,22 @@ def export_stage(result, directory):
              f"- Dữ liệu: `{result['data']['path']}`; 75.026 × 415; không chia lại.",
              f"- SHA-256: `{result['data']['sha256']}`.",
              f"- f* (Newton) = {result['reference']['f_star']:.12f}; λ=0,001; w0=0.",
-             f"- Chuẩn dừng của lượt chạy cuối: ||gradient|| ≤ {CONVERGENCE_TOL:g}; BLAS một luồng.",
+             "- BLAS một luồng.",
              "- Dò thô/tinh: 500 bước/cấu hình; chọn chuẩn gradient cuối nhỏ nhất, sau đó gap và số objective.",
              "- Dò thô chỉ cần nhận diện vùng có dấu hiệu hội tụ, không yêu cầu đạt ngưỡng dừng.",
              "- Dò tinh so sánh độ giảm sai số trong cùng 500 bước; ngưỡng dừng dùng cho lượt chạy cuối.",
-             f"- Cấu hình chọn: `{selected['parameters']}`.", "",
-             "| Cấu hình | Bước | f−f* cuối | Gradient cuối | Thời gian (s) | Gradient ≤ 1e-8 |",
-             "|---|---:|---:|---:|---:|---|"]
+             f"- Cấu hình chọn: `{selected['parameters']}`.", ""]
+    final = result["stage"] == "final"
+    if final:
+        lines.extend([f"- Chuẩn dừng: ||gradient|| ≤ {CONVERGENCE_TOL:g}.", ""])
+    lines.extend(["| Cấu hình | Bước | f−f* cuối | Gradient cuối | Thời gian (s) |"
+                  + (" Đạt chuẩn dừng |" if final else ""),
+                  "|---|---:|---:|---:|---:|" + ("---|" if final else "")])
     for row in rows:
         lines.append(f"| {row['parameters']} | {row['iterations_run']} | {row['final_f_gap']:.3e} | "
-                     f"{row['final_grad_norm']:.3e} | {row['elapsed_s']:.3f} | "
-                     f"{'Có' if row['first_converged_at'] is not None else 'Chưa'} |")
+                     f"{row['final_grad_norm']:.3e} | {row['elapsed_s']:.3f} |"
+                     + ((" Có |" if row['first_converged_at'] is not None else " Chưa |")
+                        if final else ""))
     for row in rows:
         if not row["finite"]:
             lines.extend(["", f"Cấu hình `{row['parameters']}` dừng sau {row['iterations_run']} "

@@ -5,7 +5,7 @@ Cập nhật ngày 02/10/2026. Mỗi giai đoạn hoàn tất phải được l�
 | Phương pháp | Dò thô | Dò tinh | Chạy cuối |
 |---|---|---|---|
 | GD cố định | Hoàn tất; vùng có dấu hiệu hội tụ, tốt nhất t=0,5 | Hoàn tất; chọn t=0,5 | Chưa chạy |
-| GD backtracking | Hoàn tất; chọn rho=0.9, c=0.5, t0=20 | Đang chạy; đã lưu 6/9 cấu hình | Chưa chạy |
+| GD backtracking | Hoàn tất; chọn rho=0.9, c=0.5, t0=20 | Đang chạy; đã lưu 7/9 cấu hình | Chưa chạy |
 | AGD momentum hằng | Chưa chạy | Chưa chạy | Chưa chạy |
 | AGD momentum biến thiên | Chưa chạy | Chưa chạy | Chưa chạy |
 

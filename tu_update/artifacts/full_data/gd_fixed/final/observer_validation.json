@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "check": "observer numerical invariance on 24 x 3 synthetic logistic dataset",
+  "updates_verified": 20,
+  "weights_objectives_gradient_trace_and_evaluation_counts": "exactly_equal",
+  "checkpoint_endpoint_verified": true,
+  "computation_fingerprint_unchanged": true,
+  "observer_source_sha256": "33c79850199b1ca368a07afcde5401fa17c8f1fef6bf730926765d8bf576bc28"
+}

@@ -6,7 +6,7 @@ ngưỡng gradient 1e-8 dành cho lượt chạy cuối. Hình không có tiêu 
 
 | Phương pháp | Dò thô | Dò tinh | Chạy cuối |
 |---|---|---|---|
-| GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Chưa chạy |
+| GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Đang chạy; giữ t=0,5, đo 3 lần |
 | GD backtracking | Hoàn tất; 9 cấu hình; chọn rho=0,9, c=0,5 | Hoàn tất; 8 cấu hình đủ 500 bước, 1 bị loại | Chưa chạy |
 | AGD momentum hằng | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,2 | Chưa chạy |
 | AGD momentum biến thiên | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,3 | Chưa chạy |
@@ -85,7 +85,7 @@ Cả 4 phương pháp đã hoàn tất dò thô và dò tinh. Cấu hình cùng 
 ## Bước tiếp theo
 
 ```bash
-python tu_update/run_full_data_stage.py --method gd_fixed --stage final
+python tu_update/run_full_data_with_progress.py --method gd_fixed --stage final
 ```
 
 Chạy từng phương pháp với cấu hình đã khóa từ w0=0 tới chuẩn dừng; mỗi phương pháp 3 lần đo thời gian. Kiểm tra và lưu kết quả lên Git sau từng phương pháp, rồi mới so sánh cả 4.

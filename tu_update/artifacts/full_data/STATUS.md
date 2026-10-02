@@ -8,7 +8,7 @@ ngưỡng gradient 1e-8 dành cho lượt chạy cuối. Hình không có tiêu 
 |---|---|---|---|
 | GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Chưa chạy |
 | GD backtracking | Hoàn tất; 9 cấu hình; chọn rho=0,9, c=0,5 | Hoàn tất; 8 cấu hình đủ 500 bước, 1 bị loại | Chưa chạy |
-| AGD momentum hằng | Hoàn tất; 9 cấu hình; chọn t=0,1 | Chưa chạy | Chưa chạy |
+| AGD momentum hằng | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,2 | Chưa chạy |
 | AGD momentum biến thiên | Chưa chạy | Chưa chạy | Chưa chạy |
 
 ## GD backtracking dò tinh
@@ -40,12 +40,23 @@ Checkpoint đã được lưu lên Git trong lúc chạy trước khi lưu giai 
 - Hình không có tiêu đề. Đã lưu checkpoint lên Git trong lúc chạy.
 - Dò tinh tiếp theo quanh t=0,1 trong khoảng [0,05; 0,5], giữ beta: t={0,05; 0,0625; 0,075; 0,0875; 0,1; 0,2; 0,3; 0,4; 0,5}.
 
+## AGD momentum hằng dò tinh
+
+- Giữ beta=0,9832713994805439; lưới t={0,05; 0,0625; 0,075; 0,0875; 0,1; 0,2; 0,3; 0,4; 0,5}.
+- Cả 9 cấu hình đủ 500 bước, chưa đạt gradient 1e-8; hình không có tiêu đề.
+- Chọn t=0,2 theo cả chuẩn gradient cuối và gap: f-f*=7,74658602502587e-5; gradient=9,303935505614293e-4.
+- So với cấu hình chọn ở dò thô t=0,1, gap giảm 24,49%, chuẩn gradient cuối giảm 10,63% tại cùng ngân sách 500 bước.
+- t=0,4 và t=0,5 còn dao động rõ. Không kết luận hội tụ chỉ dựa vào giảm gap; ngưỡng dừng dành cho lượt final sau khi khóa tham số.
+- Kiểm tra cấu trúc 4.500 bước, tái dựng 90 bước đầu, tái tính objective/gradient từ trọng số cuối của cả 9 cấu hình: đạt.
+- Ba cấu hình trùng dò thô t={0,05; 0,1; 0,5} tái lập đầy đủ trace số học và trọng số tới sai số 1e-12.
+- Đã lưu checkpoint lên Git trong lúc chạy, sau đó lưu toàn bộ results.json, search_results.csv, summary.md, validation.json và convergence.png.
+
 ## Bước tiếp theo
 
 ```bash
-python tu_update/run_full_data_stage.py --method agd_constant --stage fine
+python tu_update/run_full_data_stage.py --method agd_dynamic --stage coarse
 ```
 
-Sau khi xong dò tinh, kiểm tra và lưu kết quả lên Git trước khi chuyển sang phương pháp tiếp theo.
+Sau khi xong dò thô AGD momentum biến thiên, kiểm tra và lưu kết quả lên Git trước khi chạy dò tinh.
 Tập test gốc rỗng; chỉ số mô hình cuối cùng là in-sample. Chưa tính chỉ số phân loại;
 chưa chạy lượt final và chưa sửa `.tex`.

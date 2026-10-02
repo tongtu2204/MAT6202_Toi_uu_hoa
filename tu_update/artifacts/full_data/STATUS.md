@@ -5,7 +5,7 @@ Cập nhật ngày 02/10/2026. Mỗi giai đoạn hoàn tất phải được l�
 | Phương pháp | Dò thô | Dò tinh | Chạy cuối |
 |---|---|---|---|
 | GD cố định | Hoàn tất; vùng có dấu hiệu hội tụ, tốt nhất t=0,5 | Hoàn tất; chọn t=0,5 | Chưa chạy |
-| GD backtracking | Đang chạy; đã lưu 8/9 cấu hình | Chưa chạy lại | Chưa chạy |
+| GD backtracking | Hoàn tất; chọn rho=0.9, c=0.5, t0=20 | Chưa chạy | Chưa chạy |
 | AGD momentum hằng | Chưa chạy | Chưa chạy | Chưa chạy |
 | AGD momentum biến thiên | Chưa chạy | Chưa chạy | Chưa chạy |
 
@@ -19,10 +19,14 @@ Chạy lại lệnh GD thô tiếp tục dùng checkpoint, không chạy lại 9
 ## Bước tiếp theo
 
 ```bash
-python tu_update/run_full_data_stage.py --method gd_backtracking --stage coarse
+python tu_update/run_full_data_stage.py --method gd_backtracking --stage fine
 ```
 
 Lưới GD tinh đã chạy: {0,1; 0,2; 0,3; 0,4; 0,5; 0,625; 0,75; 0,875; 1}.
-Khi GD backtracking dò thô xong, kiểm tra và lưu `gd_backtracking/coarse/` lên Git trước khi dò tinh.
+GD backtracking thô đã hoàn tất: 9 cấu hình × 500 bước; cả 9 đường giảm đều và có dấu hiệu hội tụ.
+Chọn rho=0,9; c=0,5; t0=20: gap=1,690e-5; gradient=2,547e-4.
+Đã kiểm tra Armijo ở tất cả 4.500 bước; số lần thử, số lần tính objective và trọng số cuối đều nhất quán.
+Checkpoint được lưu lên Git sau 3, 6, 7, 8 cấu hình trước khi lưu giai đoạn hoàn chỉnh.
+Hình GD backtracking thô không có tiêu đề. Bước tiếp theo là dò tinh quanh cấu hình chọn.
 
 Tệp đầy đủ có X_test rỗng; bảng chất lượng sau cùng là in-sample. Chưa sửa `.tex`.

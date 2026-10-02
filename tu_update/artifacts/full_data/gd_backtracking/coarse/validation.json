@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "candidate_count": 9,
+  "data_sha256": "0c54d5d6c88667ae067cbf3be55df2f749d2c89e1a1f37c3e07fef60855f56d4",
+  "candidates": [
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.1,
+        "c": 0.0001
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -4.408726687339181e-08,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.1,
+        "c": 0.1
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -1.4642406533705028e-08,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.1,
+        "c": 0.5
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -5.2269632533124515e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.5,
+        "c": 0.0001
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -2.9204731732238433e-08,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.5,
+        "c": 0.1
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -4.116058339310765e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.5,
+        "c": 0.5
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -4.290249224238206e-11,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.0001
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -8.277892657443265e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.1
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -2.957667102915008e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.5
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -7.879550680120761e-12,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    }
+  ]
+}

@@ -9,7 +9,7 @@ ngưỡng gradient 1e-8 dành cho lượt chạy cuối. Hình không có tiêu 
 | GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Chưa chạy |
 | GD backtracking | Hoàn tất; 9 cấu hình; chọn rho=0,9, c=0,5 | Hoàn tất; 8 cấu hình đủ 500 bước, 1 bị loại | Chưa chạy |
 | AGD momentum hằng | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,2 | Chưa chạy |
-| AGD momentum biến thiên | Hoàn tất; 9 cấu hình; chọn t=0,1 | Chưa chạy | Chưa chạy |
+| AGD momentum biến thiên | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,3 | Chưa chạy |
 
 ## GD backtracking dò tinh
 
@@ -62,12 +62,32 @@ Checkpoint đã được lưu lên Git trong lúc chạy trước khi lưu giai 
 - Bảng dò mới bỏ cột đạt ngưỡng dừng; mục tiêu là chọn cấu hình theo cùng ngân sách. Sửa phần xuất báo cáo không thay đổi fingerprint tính toán hay thuật toán.
 - Dò tinh tiếp theo: t={0,05; 0,0625; 0,075; 0,0875; 0,1; 0,2; 0,3; 0,4; 0,5}.
 
+## AGD momentum biến thiên dò tinh
+
+- Lưới t={0,05; 0,0625; 0,075; 0,0875; 0,1; 0,2; 0,3; 0,4; 0,5}, đủ 500 bước/cấu hình; giữ nguyên lịch momentum biến thiên.
+- Chọn t=0,3 theo cả chuẩn gradient cuối và gap: f-f*=6.2054810243128422e-07; gradient=6.5767796001191430e-05.
+- So với cấu hình chọn ở dò thô t=0,1, gap giảm 85.83%, chuẩn gradient cuối giảm 68.02% tại cùng ngân sách 500 bước.
+- t=0,4 và t=0,5 còn dao động rõ. Đã kiểm tra cấu trúc 4.500 bước, tái dựng độc lập 90 bước đầu, tính lại objective/gradient từ trọng số cuối của cả 9 cấu hình: đạt.
+- Ba cấu hình trùng dò thô t={0,05; 0,1; 0,5} tái lập đầy đủ trace số học và trọng số tới sai số 1e-12.
+- Hình không có tiêu đề. Đã lưu checkpoint lên Git trong lúc chạy.
+
+## Cấu hình khóa sau khi dò
+
+Cả 4 phương pháp đã hoàn tất dò thô và dò tinh. Cấu hình cùng nguồn chọn được lưu trong `selected_configurations.json`; số liệu 500 bước dùng để chọn cấu hình, chưa phải kết quả chạy tới hội tụ.
+
+| Phương pháp | Cấu hình khóa |
+|---|---|
+| GD bước cố định | t=0,5 |
+| GD backtracking | t0=20; rho=0,9; c=0,5 |
+| AGD momentum hằng | t=0,2; beta=0,9832713994805439 |
+| AGD momentum biến thiên | t=0,3; beta biến thiên giữ nguyên |
+
 ## Bước tiếp theo
 
 ```bash
-python tu_update/run_full_data_stage.py --method agd_dynamic --stage fine
+python tu_update/run_full_data_stage.py --method gd_fixed --stage final
 ```
 
-Sau khi xong dò tinh AGD momentum biến thiên, kiểm tra và lưu kết quả lên Git trước khi chạy các cấu hình đã khóa tới hội tụ.
+Chạy từng phương pháp với cấu hình đã khóa từ w0=0 tới chuẩn dừng; mỗi phương pháp 3 lần đo thời gian. Kiểm tra và lưu kết quả lên Git sau từng phương pháp, rồi mới so sánh cả 4.
 Tập test gốc rỗng; chỉ số mô hình cuối cùng là in-sample. Chưa tính chỉ số phân loại;
 chưa chạy lượt final và chưa sửa `.tex`.

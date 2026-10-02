@@ -1,0 +1,53 @@
+{
+  "status": "locked_after_coarse_and_fine_search",
+  "selection_criterion": "final gradient norm, then final objective gap, then objective evaluations; 500 updates per candidate",
+  "fingerprint": {
+    "data_sha256": "0c54d5d6c88667ae067cbf3be55df2f749d2c89e1a1f37c3e07fef60855f56d4",
+    "source_sha256": "8e877b8099df6d047ef90fd3362664517075daeccb2edf245394c086d417e2fc"
+  },
+  "methods": {
+    "gd_fixed": {
+      "parameters": {
+        "step": 0.5
+      },
+      "candidate_index": 4,
+      "selection_stage": "fine",
+      "selection_source": "tu_update/artifacts/full_data/gd_fixed/fine/results.json",
+      "search_final_f_gap": 0.0005836460295274015,
+      "search_final_grad_norm": 0.0019542490815465845
+    },
+    "gd_backtracking": {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.5
+      },
+      "candidate_index": 7,
+      "selection_stage": "fine",
+      "selection_source": "tu_update/artifacts/full_data/gd_backtracking/fine/results.json",
+      "search_final_f_gap": 1.689678715177667e-05,
+      "search_final_grad_norm": 0.0002546869595952522
+    },
+    "agd_constant": {
+      "parameters": {
+        "step": 0.2,
+        "beta": 0.9832713994805439
+      },
+      "candidate_index": 5,
+      "selection_stage": "fine",
+      "selection_source": "tu_update/artifacts/full_data/agd_constant/fine/results.json",
+      "search_final_f_gap": 7.74658602502587e-05,
+      "search_final_grad_norm": 0.0009303935505614293
+    },
+    "agd_dynamic": {
+      "parameters": {
+        "step": 0.30000000000000004
+      },
+      "candidate_index": 6,
+      "selection_stage": "fine",
+      "selection_source": "tu_update/artifacts/full_data/agd_dynamic/fine/results.json",
+      "search_final_f_gap": 6.205481024312842e-07,
+      "search_final_grad_norm": 6.576779600119143e-05
+    }
+  }
+}

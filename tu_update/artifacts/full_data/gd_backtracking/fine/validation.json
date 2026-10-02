@@ -1,0 +1,117 @@
+{
+  "status": "passed_with_one_rejected_candidate",
+  "candidate_count": 9,
+  "completed_candidates": 8,
+  "accepted_updates_verified": 4000,
+  "data_sha256": "0c54d5d6c88667ae067cbf3be55df2f749d2c89e1a1f37c3e07fef60855f56d4",
+  "candidates": [
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.5,
+        "c": 0.1
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -4.116058339310765e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.5,
+        "c": 0.5
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -4.290249224238206e-11,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.5,
+        "c": 0.99
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -1.975927545964156e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.7,
+        "c": 0.1
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -1.6307496859749917e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.7,
+        "c": 0.5
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -1.2483429711530811e-10,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.7,
+        "c": 0.99
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -3.732948200006655e-11,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.1
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -2.957667102915008e-09,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.5
+      },
+      "updates": 500,
+      "monotone_decrease": true,
+      "max_armijo_residual": -7.879550680120761e-12,
+      "final_values_recomputed": true,
+      "evaluation_counts_verified": true
+    },
+    {
+      "parameters": {
+        "t0": 20.0,
+        "rho": 0.9,
+        "c": 0.99
+      },
+      "updates": 0,
+      "outcome": "rejected: no Armijo step within 60 trials",
+      "failed_trial_evaluations": 60,
+      "min_armijo_violation": 0.0050186633295720914,
+      "final_values_recomputed": true
+    }
+  ]
+}

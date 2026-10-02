@@ -175,9 +175,12 @@ def export_stage(result, directory):
         label = ", ".join(f"{k}={v:g}" for k, v in row["parameters"].items() if k != "beta")
         if result["stage"] == "final":
             label = f"Lần {row['candidate_index'] + 1}: {row['elapsed_s']:.2f}s"
+        if not row["finite"]:
+            label += " [không tìm được bước]"
         ax.semilogy(row["trace"]["iteration"],
                     np.maximum(np.asarray(row["trace"]["objective"]) - result["reference"]["f_star"], 1e-16),
-                    label=label, linewidth=1.5)
+                    label=label, linewidth=1.5,
+                    marker="x" if not row["finite"] else None, markersize=6)
     stage_label = {"coarse": "dò thô", "fine": "dò tinh", "final": "chạy tới hội tụ"}[result["stage"]]
     ax.set(xlabel="Số bước cập nhật k", ylabel=r"$f(w_k)-f^*$ (thang log)")
     ax.grid(True, which="both", alpha=0.23)
@@ -201,6 +204,11 @@ def export_stage(result, directory):
         lines.append(f"| {row['parameters']} | {row['iterations_run']} | {row['final_f_gap']:.3e} | "
                      f"{row['final_grad_norm']:.3e} | {row['elapsed_s']:.3f} | "
                      f"{'Có' if row['first_converged_at'] is not None else 'Chưa'} |")
+    for row in rows:
+        if not row["finite"]:
+            lines.extend(["", f"Cấu hình `{row['parameters']}` dừng sau {row['iterations_run']} "
+                          f"bước cập nhật: {row['note']}. Không đưa cấu hình này vào chọn tham số.",
+                          "Dấu × ở k=0 trên hình là lần thử dừng trước bước cập nhật đầu tiên."])
     if result["stage"] == "final":
         lines.extend(["", f"Thời gian trung vị: {result['median_time_s']:.3f}s.",
                       "Chỉ số mô hình trong results.json là in-sample; tập test gốc rỗng."])

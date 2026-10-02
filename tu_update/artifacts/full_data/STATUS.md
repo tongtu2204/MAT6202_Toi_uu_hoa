@@ -6,7 +6,7 @@ ngưỡng gradient 1e-8 dành cho lượt chạy cuối. Hình không có tiêu 
 
 | Phương pháp | Dò thô | Dò tinh | Chạy cuối |
 |---|---|---|---|
-| GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Đang chạy; giữ t=0,5, đo 3 lần |
+| GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Đang chạy; 1/3 lần hội tụ sau 17.350 bước |
 | GD backtracking | Hoàn tất; 9 cấu hình; chọn rho=0,9, c=0,5 | Hoàn tất; 8 cấu hình đủ 500 bước, 1 bị loại | Chưa chạy |
 | AGD momentum hằng | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,2 | Chưa chạy |
 | AGD momentum biến thiên | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,3 | Chưa chạy |

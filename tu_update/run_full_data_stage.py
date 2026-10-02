@@ -189,18 +189,20 @@ def export_stage(result, directory):
     fig.savefig(directory / "convergence.png", dpi=190)
     plt.close(fig)
     selected = result["selected"]
+    final = result["stage"] == "final"
     lines = [f"# {LABELS[result['method']]} — {stage_label}", "",
              f"- Dữ liệu: `{result['data']['path']}`; 75.026 × 415; không chia lại.",
              f"- SHA-256: `{result['data']['sha256']}`.",
              f"- f* (Newton) = {result['reference']['f_star']:.12f}; λ=0,001; w0=0.",
-             "- BLAS một luồng.",
-             "- Dò thô/tinh: 500 bước/cấu hình; chọn chuẩn gradient cuối nhỏ nhất, sau đó gap và số objective.",
-             "- Dò thô chỉ cần nhận diện vùng có dấu hiệu hội tụ, không yêu cầu đạt ngưỡng dừng.",
-             "- Dò tinh so sánh độ giảm sai số trong cùng 500 bước; ngưỡng dừng dùng cho lượt chạy cuối.",
-             f"- Cấu hình chọn: `{selected['parameters']}`.", ""]
-    final = result["stage"] == "final"
+             "- BLAS một luồng."]
     if final:
-        lines.extend([f"- Chuẩn dừng: ||gradient|| ≤ {CONVERGENCE_TOL:g}.", ""])
+        lines.extend([f"- Tham số đã khóa từ dò tinh; chạy lại {TIMING_REPEATS} lần từ w0=0.",
+                      f"- Chuẩn dừng: ||gradient|| ≤ {CONVERGENCE_TOL:g}; giới hạn {CONVERGENCE_MAX_ITER} bước."])
+    else:
+        lines.extend(["- Dò thô/tinh: 500 bước/cấu hình; chọn chuẩn gradient cuối nhỏ nhất, sau đó gap và số objective.",
+                      "- Dò thô chỉ cần nhận diện vùng có dấu hiệu hội tụ, không yêu cầu đạt ngưỡng dừng.",
+                      "- Dò tinh so sánh độ giảm sai số trong cùng 500 bước; ngưỡng dừng dùng cho lượt chạy cuối."])
+    lines.extend([f"- Cấu hình chọn: `{selected['parameters']}`.", ""])
     lines.extend(["| Cấu hình | Bước | f−f* cuối | Gradient cuối | Thời gian (s) |"
                   + (" Đạt chuẩn dừng |" if final else ""),
                   "|---|---:|---:|---:|---:|" + ("---|" if final else "")])

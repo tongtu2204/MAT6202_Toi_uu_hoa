@@ -9,7 +9,7 @@ ngưỡng gradient 1e-8 dành cho lượt chạy cuối. Hình không có tiêu 
 | GD cố định | Hoàn tất; 9 cấu hình; chọn t=0,5 | Hoàn tất; 9 cấu hình; chọn t=0,5 | Chưa chạy |
 | GD backtracking | Hoàn tất; 9 cấu hình; chọn rho=0,9, c=0,5 | Hoàn tất; 8 cấu hình đủ 500 bước, 1 bị loại | Chưa chạy |
 | AGD momentum hằng | Hoàn tất; 9 cấu hình; chọn t=0,1 | Hoàn tất; 9 cấu hình; chọn t=0,2 | Chưa chạy |
-| AGD momentum biến thiên | Chưa chạy | Chưa chạy | Chưa chạy |
+| AGD momentum biến thiên | Hoàn tất; 9 cấu hình; chọn t=0,1 | Chưa chạy | Chưa chạy |
 
 ## GD backtracking dò tinh
 
@@ -51,12 +51,23 @@ Checkpoint đã được lưu lên Git trong lúc chạy trước khi lưu giai 
 - Ba cấu hình trùng dò thô t={0,05; 0,1; 0,5} tái lập đầy đủ trace số học và trọng số tới sai số 1e-12.
 - Đã lưu checkpoint lên Git trong lúc chạy, sau đó lưu toàn bộ results.json, search_results.csv, summary.md, validation.json và convergence.png.
 
+## AGD momentum biến thiên dò thô
+
+- Lưới t={0,05; 0,1; 0,5; 1; 1,5; 2; 3; 5; 10}, đủ 500 bước/cấu hình.
+- Momentum ở bước cập nhật j: beta_j=(j-1)/(j+2), j bắt đầu từ 1; tương đương beta_k=(k-2)/(k+1) với k=j+1 trong công thức gốc.
+- t=0,05 và t=0,1 có dấu hiệu tiến về nghiệm; t=0,5 dao động quanh gap khoảng 0,01; các bước lớn hơn dao động mạnh.
+- Chọn t=0,1 theo cả chuẩn gradient cuối và gap: f-f*=4,378820680273066e-6; gradient=2,0562130888448655e-4.
+- Kiểm tra cấu trúc 4.500 bước, tái dựng độc lập 90 bước đầu theo momentum biến thiên, tính lại objective/gradient từ trọng số cuối của cả 9 cấu hình: đạt.
+- Hình không có tiêu đề; checkpoint đã lưu lên Git trong lúc chạy.
+- Bảng dò mới bỏ cột đạt ngưỡng dừng; mục tiêu là chọn cấu hình theo cùng ngân sách. Sửa phần xuất báo cáo không thay đổi fingerprint tính toán hay thuật toán.
+- Dò tinh tiếp theo: t={0,05; 0,0625; 0,075; 0,0875; 0,1; 0,2; 0,3; 0,4; 0,5}.
+
 ## Bước tiếp theo
 
 ```bash
-python tu_update/run_full_data_stage.py --method agd_dynamic --stage coarse
+python tu_update/run_full_data_stage.py --method agd_dynamic --stage fine
 ```
 
-Sau khi xong dò thô AGD momentum biến thiên, kiểm tra và lưu kết quả lên Git trước khi chạy dò tinh.
+Sau khi xong dò tinh AGD momentum biến thiên, kiểm tra và lưu kết quả lên Git trước khi chạy các cấu hình đã khóa tới hội tụ.
 Tập test gốc rỗng; chỉ số mô hình cuối cùng là in-sample. Chưa tính chỉ số phân loại;
 chưa chạy lượt final và chưa sửa `.tex`.
